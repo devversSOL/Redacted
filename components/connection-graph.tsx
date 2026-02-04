@@ -119,10 +119,10 @@ export function ConnectionGraph({ investigationId }: ConnectionGraphProps) {
   }
 
   const strengthColors: Record<string, string> = {
-    verified: "bg-green-500/10 text-green-500 border-green-500/30",
-    strong: "bg-blue-500/10 text-blue-500 border-blue-500/30",
-    moderate: "bg-yellow-500/10 text-yellow-500 border-yellow-500/30",
-    weak: "bg-orange-500/10 text-orange-500 border-orange-500/30",
+    verified: "bg-primary/10 text-foreground border-border/30",
+    strong: "bg-muted/10 text-muted-foreground border-blue-500/30",
+    moderate: "bg-muted/10 text-muted-foreground border-yellow-500/30",
+    weak: "bg-muted/10 text-muted-foreground border-border/30",
     unverified: "bg-gray-500/10 text-gray-500 border-gray-500/30",
   }
 
@@ -140,7 +140,7 @@ export function ConnectionGraph({ investigationId }: ConnectionGraphProps) {
   if (error) {
     return (
       <Card className="p-6">
-        <div className="text-center text-red-500">
+        <div className="text-center text-foreground">
           Failed to load connection graph
         </div>
       </Card>
@@ -242,14 +242,14 @@ export function ConnectionGraph({ investigationId }: ConnectionGraphProps) {
             return (
               <div 
                 key={conn.id}
-                className={`p-3 rounded-lg border ${hasRedacted ? 'border-dashed border-yellow-500/30 bg-yellow-500/5' : 'border-border bg-secondary/30'}`}
+                className={`p-3 rounded-lg border ${hasRedacted ? 'border-dashed border-yellow-500/30 bg-muted/5' : 'border-border bg-secondary/30'}`}
               >
                 <div className="flex items-center gap-2 flex-wrap">
                   {/* Source Entity */}
                   <div 
                     className={`flex items-center gap-1 px-2 py-1 rounded text-xs ${
                       conn.source_entity?.is_redacted 
-                        ? 'bg-yellow-500/20 text-yellow-500' 
+                        ? 'bg-muted/20 text-muted-foreground' 
                         : 'bg-primary/10 text-primary'
                     }`}
                     onClick={() => setSelectedEntity(conn.source_entity_id)}
@@ -284,7 +284,7 @@ export function ConnectionGraph({ investigationId }: ConnectionGraphProps) {
                   <div 
                     className={`flex items-center gap-1 px-2 py-1 rounded text-xs ${
                       conn.target_entity?.is_redacted 
-                        ? 'bg-yellow-500/20 text-yellow-500' 
+                        ? 'bg-muted/20 text-muted-foreground' 
                         : 'bg-primary/10 text-primary'
                     }`}
                     onClick={() => setSelectedEntity(conn.target_entity_id)}
@@ -322,7 +322,7 @@ export function ConnectionGraph({ investigationId }: ConnectionGraphProps) {
 
                 {/* Redaction warning */}
                 {hasRedacted && (
-                  <div className="mt-2 flex items-center gap-1 text-xs text-yellow-500">
+                  <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
                     <AlertTriangle className="w-3 h-3" />
                     Contains redacted entity - identity unknown
                   </div>

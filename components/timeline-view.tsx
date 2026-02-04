@@ -89,10 +89,10 @@ export function TimelineView({ investigationId }: TimelineViewProps) {
   }
 
   const eventTypeColors: Record<string, string> = {
-    meeting: "bg-blue-500/10 text-blue-500 border-blue-500/30",
-    transaction: "bg-green-500/10 text-green-500 border-green-500/30",
-    communication: "bg-purple-500/10 text-purple-500 border-purple-500/30",
-    observation: "bg-orange-500/10 text-orange-500 border-orange-500/30",
+    meeting: "bg-muted/10 text-muted-foreground border-blue-500/30",
+    transaction: "bg-primary/10 text-foreground border-border/30",
+    communication: "bg-muted/10 text-muted-foreground border-purple-500/30",
+    observation: "bg-muted/10 text-muted-foreground border-border/30",
     other: "bg-gray-500/10 text-gray-500 border-gray-500/30",
     unknown: "bg-gray-500/10 text-gray-500 border-gray-500/30",
   }
@@ -111,7 +111,7 @@ export function TimelineView({ investigationId }: TimelineViewProps) {
   if (error) {
     return (
       <Card className="p-6">
-        <div className="text-center text-red-500">
+        <div className="text-center text-foreground">
           Failed to load timeline events
         </div>
       </Card>

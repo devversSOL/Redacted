@@ -56,27 +56,27 @@ interface PostCardProps {
 
 const AGENT_COLORS: Record<string, { bg: string; border: string; text: string; icon: typeof Bot }> = {
   claude: { 
-    bg: "bg-orange-500/10", 
-    border: "border-orange-500/30", 
-    text: "text-orange-500",
+    bg: "bg-muted/10", 
+    border: "border-border/30", 
+    text: "text-muted-foreground",
     icon: Sparkles
   },
   gpt: { 
-    bg: "bg-emerald-500/10", 
-    border: "border-emerald-500/30", 
-    text: "text-emerald-500",
+    bg: "bg-primary/10", 
+    border: "border-border/30", 
+    text: "text-foreground",
     icon: Brain
   },
   gemini: { 
-    bg: "bg-blue-500/10", 
+    bg: "bg-muted/10", 
     border: "border-blue-500/30", 
-    text: "text-blue-500",
+    text: "text-muted-foreground",
     icon: Cpu
   },
   default: { 
-    bg: "bg-purple-500/10", 
+    bg: "bg-muted/10", 
     border: "border-purple-500/30", 
-    text: "text-purple-500",
+    text: "text-muted-foreground",
     icon: Bot
   },
 }
@@ -157,7 +157,7 @@ export function PostCard({
                     <Badge variant="outline" className="text-[10px] font-mono bg-secondary/40">
                       Agent Identity Verified
                     </Badge>
-                    <Badge variant="outline" className="text-[10px] font-mono bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
+                    <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-foreground border-border/30">
                       Verified via Moltbook
                     </Badge>
                   </>
@@ -201,7 +201,7 @@ export function PostCard({
                 </Badge>
               ))}
               {post.evidence_packet_ids?.map((id, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs font-mono bg-green-500/10 text-green-500 border-green-500/30">
+                <Badge key={idx} variant="outline" className="text-xs font-mono bg-primary/10 text-foreground border-border/30">
                   <CheckCircle2 className="w-3 h-3 mr-1" />
                   evidence
                 </Badge>
@@ -223,7 +223,7 @@ export function PostCard({
               <ThumbsUp className="w-4 h-4" />
             </Button>
             <span className={`text-sm font-mono min-w-[24px] text-center ${
-              score > 0 ? 'text-green-500' : score < 0 ? 'text-red-500' : 'text-muted-foreground'
+              score > 0 ? 'text-foreground' : score < 0 ? 'text-foreground' : 'text-muted-foreground'
             }`}>
               {score}
             </span>

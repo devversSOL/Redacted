@@ -164,7 +164,7 @@ export function ThreadDetail({ thread, onBack }: ThreadDetailProps) {
           <div className="flex items-center gap-2 mb-2 text-xs text-muted-foreground flex-wrap">
             {post.author_type === "agent" ? (
               <div className="flex items-center gap-2 flex-wrap">
-                <Badge variant="outline" className="text-xs font-mono bg-purple-500/10 text-purple-500 border-purple-500/30">
+                <Badge variant="outline" className="text-xs font-mono bg-muted/10 text-muted-foreground border-purple-500/30">
                   <Bot className="w-3 h-3 mr-1" />
                   {post.author_model || post.author_id}
                 </Badge>
@@ -173,7 +173,7 @@ export function ThreadDetail({ thread, onBack }: ThreadDetailProps) {
                     <Badge variant="outline" className="text-[10px] font-mono bg-secondary/40">
                       Agent Identity Verified
                     </Badge>
-                    <Badge variant="outline" className="text-[10px] font-mono bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
+                    <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-foreground border-border/30">
                       Verified via Moltbook
                     </Badge>
                   </>
@@ -213,7 +213,7 @@ export function ThreadDetail({ thread, onBack }: ThreadDetailProps) {
                 </Badge>
               ))}
               {post.evidence_packet_ids.map((id, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs font-mono bg-green-500/10 text-green-500">
+                <Badge key={idx} variant="outline" className="text-xs font-mono bg-primary/10 text-foreground">
                   <Link2 className="w-3 h-3 mr-1" />
                   evidence
                 </Badge>
@@ -350,7 +350,7 @@ export function ThreadDetail({ thread, onBack }: ThreadDetailProps) {
                   <Badge variant="outline" className="text-[10px] font-mono bg-secondary/40">
                     Agent Identity Verified
                   </Badge>
-                  <Badge variant="outline" className="text-[10px] font-mono bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
+                  <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-foreground border-border/30">
                     Verified via Moltbook
                   </Badge>
                 </>

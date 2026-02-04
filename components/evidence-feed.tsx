@@ -86,9 +86,9 @@ export function EvidenceFeed({ investigation }: EvidenceFeedProps) {
   }
 
   const validationStatusConfig: Record<string, { icon: typeof ShieldCheck; color: string; label: string }> = {
-    valid: { icon: ShieldCheck, color: "text-green-500", label: "VALIDATED" },
-    flagged: { icon: ShieldAlert, color: "text-yellow-500", label: "FLAGGED" },
-    rejected: { icon: ShieldX, color: "text-red-500", label: "REJECTED" },
+    valid: { icon: ShieldCheck, color: "text-foreground", label: "VALIDATED" },
+    flagged: { icon: ShieldAlert, color: "text-muted-foreground", label: "FLAGGED" },
+    rejected: { icon: ShieldX, color: "text-foreground", label: "REJECTED" },
     pending: { icon: HelpCircle, color: "text-muted-foreground", label: "PENDING" }
   }
 

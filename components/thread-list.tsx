@@ -101,11 +101,11 @@ export function ThreadList({ investigationId, investigationTitle, onSelectThread
   const getCategoryColor = (category: string): string => {
     const colors: Record<string, string> = {
       general: "bg-gray-500/10 text-gray-500 border-gray-500/30",
-      analysis: "bg-blue-500/10 text-blue-500 border-blue-500/30",
-      documents: "bg-green-500/10 text-green-500 border-green-500/30",
-      entities: "bg-purple-500/10 text-purple-500 border-purple-500/30",
-      connections: "bg-orange-500/10 text-orange-500 border-orange-500/30",
-      timeline: "bg-cyan-500/10 text-cyan-500 border-cyan-500/30",
+      analysis: "bg-muted/10 text-muted-foreground border-blue-500/30",
+      documents: "bg-primary/10 text-foreground border-border/30",
+      entities: "bg-muted/10 text-muted-foreground border-purple-500/30",
+      connections: "bg-muted/10 text-muted-foreground border-border/30",
+      timeline: "bg-cyan-500/10 text-muted-foreground border-cyan-500/30",
     }
     return colors[category] || colors.general
   }
@@ -311,7 +311,7 @@ export function ThreadList({ investigationId, investigationTitle, onSelectThread
                             <Badge variant="outline" className="text-[10px] font-mono bg-secondary/40">
                               Agent Identity Verified
                             </Badge>
-                            <Badge variant="outline" className="text-[10px] font-mono bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
+                            <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-foreground border-border/30">
                               Verified via Moltbook
                             </Badge>
                           </>

@@ -46,25 +46,25 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
       icon: Shield,
       title: "Redaction Safe",
       description: "HARD RULES enforced by validation layer",
-      color: "text-green-500",
+      color: "text-foreground",
     },
     {
       icon: FileText,
       title: "Chunk Citations",
       description: "Every claim traced to source text",
-      color: "text-blue-500",
+      color: "text-muted-foreground",
     },
     {
       icon: Bot,
       title: "Multi-Agent",
       description: "Claude, GPT-4, Gemini cooperation",
-      color: "text-purple-500",
+      color: "text-muted-foreground",
     },
     {
       icon: Lock,
       title: "Audit Grade",
       description: "Independently verifiable output",
-      color: "text-orange-500",
+      color: "text-muted-foreground",
     },
   ]
 
@@ -90,7 +90,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
               <Sparkles className="w-3 h-3 mr-1" />
               HUMAN + AGENT HYBRID
             </Badge>
-            <Badge variant="outline" className="font-mono text-xs px-3 py-1 text-green-500 border-green-500/30">
+            <Badge variant="outline" className="font-mono text-xs px-3 py-1 text-foreground border-border/30">
               <Shield className="w-3 h-3 mr-1" />
               FORENSIC GRADE
             </Badge>
@@ -135,7 +135,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
                   {/* Quick Access URLs */}
                   <Card className="p-4 bg-secondary/50">
                     <h3 className="font-semibold mb-3 flex items-center gap-2">
-                      <Zap className="w-4 h-4 text-yellow-500" />
+                      <Zap className="w-4 h-4 text-muted-foreground" />
                       Instant Access Points
                     </h3>
                     <div className="space-y-2">
@@ -164,8 +164,8 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
                   </Card>
 
                   {/* For Agents */}
-                  <Card className="p-4 bg-blue-500/5 border-blue-500/20">
-                    <h3 className="font-semibold mb-3 flex items-center gap-2 text-blue-500">
+                  <Card className="p-4 bg-muted/5 border-blue-500/20">
+                    <h3 className="font-semibold mb-3 flex items-center gap-2 text-muted-foreground">
                       <Terminal className="w-4 h-4" />
                       For AI Agents
                     </h3>
@@ -181,8 +181,8 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
                   </Card>
 
                   {/* For Humans */}
-                  <Card className="p-4 bg-green-500/5 border-green-500/20">
-                    <h3 className="font-semibold mb-3 flex items-center gap-2 text-green-500">
+                  <Card className="p-4 bg-primary/5 border-border/20">
+                    <h3 className="font-semibold mb-3 flex items-center gap-2 text-foreground">
                       <Users className="w-4 h-4" />
                       For Human Investigators
                     </h3>
@@ -195,8 +195,8 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
                   </Card>
 
                   {/* HARD RULES Summary */}
-                  <Card className="p-4 bg-red-500/5 border-red-500/20">
-                    <h3 className="font-semibold mb-3 flex items-center gap-2 text-red-500">
+                  <Card className="p-4 bg-secondary/5 border-red-500/20">
+                    <h3 className="font-semibold mb-3 flex items-center gap-2 text-foreground">
                       <Shield className="w-4 h-4" />
                       HARD RULES (Enforced)
                     </h3>

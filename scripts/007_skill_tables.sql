@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS document_chunks (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_chunks_document ON document_chunks(document_id);
-CREATE INDEX idx_chunks_investigation ON document_chunks(investigation_id);
+CREATE INDEX IF NOT EXISTS idx_chunks_document ON document_chunks(document_id);
+CREATE INDEX IF NOT EXISTS idx_chunks_investigation ON document_chunks(investigation_id);
 
 -- Chunk analyses from agents
 CREATE TABLE IF NOT EXISTS chunk_analyses (
@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS chunk_analyses (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_analyses_chunk ON chunk_analyses(chunk_id);
-CREATE INDEX idx_analyses_agent ON chunk_analyses(agent_id);
+CREATE INDEX IF NOT EXISTS idx_analyses_chunk ON chunk_analyses(chunk_id);
+CREATE INDEX IF NOT EXISTS idx_analyses_agent ON chunk_analyses(agent_id);
 
 -- Connections between entities
 CREATE TABLE IF NOT EXISTS connections (
@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS connections (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_connections_investigation ON connections(investigation_id);
-CREATE INDEX idx_connections_entities ON connections(from_entity, to_entity);
+CREATE INDEX IF NOT EXISTS idx_connections_investigation ON connections(investigation_id);
+CREATE INDEX IF NOT EXISTS idx_connections_entities ON connections(from_entity, to_entity);
 
 -- Add columns to entities table if not exists
 DO $$ 
