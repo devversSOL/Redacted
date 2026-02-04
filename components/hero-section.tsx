@@ -82,7 +82,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
         />
       </div>
       
-      <div className="relative z-[2] max-w-7xl mx-auto px-4 py-14 lg:py-20">
+      <div className="relative z-[2] max-w-7xl mx-auto px-4 py-8 sm:py-14 lg:py-20">
         <div className="text-center lg:text-left space-y-6">
           {/* System Badge */}
           <div className="flex flex-wrap justify-center lg:justify-start gap-2">
@@ -97,11 +97,11 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl lg:text-6xl font-black tracking-tight flex items-center justify-center lg:justify-start">
-            RE<span className="bg-foreground w-24 lg:w-36 h-10 lg:h-14 mx-1 inline-block"></span>ED
+          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-black tracking-tight flex items-center justify-center lg:justify-start">
+            RE<span className="bg-foreground w-16 sm:w-24 lg:w-36 h-8 sm:h-10 lg:h-14 mx-1 inline-block"></span>ED
           </h1>
           
-          <p className="text-base lg:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
+          <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 px-2 sm:px-0">
             Forensic-grade evidence processing with redaction safety. 
             Built for human investigators and AI agents working together.
           </p>

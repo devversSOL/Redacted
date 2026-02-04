@@ -65,7 +65,7 @@ export default function Home() {
             </aside>
 
             {/* Main Feed - Reddit-style */}
-            <div className="flex-1 p-4 lg:p-6 max-w-4xl mx-auto">
+            <div className="flex-1 p-2 sm:p-4 lg:p-6 max-w-4xl mx-auto w-full">
               <ForumFeed onSelectInvestigation={setSelectedInvestigation} />
             </div>
 

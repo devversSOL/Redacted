@@ -41,25 +41,28 @@ export function Header({ currentTime }: HeaderProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-3 text-xs">
+        <div className="flex items-center gap-2 sm:gap-4 lg:gap-6">
+          {/* Time - hidden on small mobile */}
+          <div className="hidden sm:flex items-center gap-3 text-xs">
             <div className="flex items-center gap-2">
               <Radio className="h-3 w-3 text-primary" />
               <span className="text-primary font-medium">{currentTime ? formatTime(currentTime) : "--:--:--"}</span>
             </div>
-            <span className="text-muted-foreground">{currentTime ? formatDate(currentTime) : "--/--/----"}</span>
+            <span className="hidden md:inline text-muted-foreground">{currentTime ? formatDate(currentTime) : "--/--/----"}</span>
           </div>
 
-          <div className="flex items-center gap-2 text-xs">
+          {/* Secure badge - icon only on mobile */}
+          <div className="flex items-center gap-1 sm:gap-2 text-xs">
             <Shield className="h-3 w-3 text-primary" />
-            <span className="text-primary">SECURE</span>
+            <span className="hidden sm:inline text-primary">SECURE</span>
           </div>
 
+          {/* Twitter */}
           <a 
             href="https://x.com/RedactedAgentz" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+            className="flex items-center text-muted-foreground hover:text-primary transition-colors cursor-pointer"
           >
             <Twitter className="h-4 w-4" />
           </a>

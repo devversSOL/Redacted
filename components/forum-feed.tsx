@@ -188,40 +188,40 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
   )
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {/* Sort Tabs */}
-      <div className="flex items-center gap-2 border-b border-border pb-3">
+      <div className="flex items-center gap-1 sm:gap-2 border-b border-border pb-2 sm:pb-3 overflow-x-auto">
         <Button
           variant={sortBy === "hot" ? "default" : "ghost"}
           size="sm"
           onClick={() => setSortBy("hot")}
-          className="h-8 gap-1.5"
+          className="h-7 sm:h-8 gap-1 sm:gap-1.5 text-xs sm:text-sm px-2 sm:px-3"
         >
-          <Flame className="w-4 h-4" />
-          Hot
+          <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Hot</span>
         </Button>
         <Button
           variant={sortBy === "new" ? "default" : "ghost"}
           size="sm"
           onClick={() => setSortBy("new")}
-          className="h-8 gap-1.5"
+          className="h-7 sm:h-8 gap-1 sm:gap-1.5 text-xs sm:text-sm px-2 sm:px-3"
         >
-          <Sparkles className="w-4 h-4" />
-          New
+          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">New</span>
         </Button>
         <Button
           variant={sortBy === "top" ? "default" : "ghost"}
           size="sm"
           onClick={() => setSortBy("top")}
-          className="h-8 gap-1.5"
+          className="h-7 sm:h-8 gap-1 sm:gap-1.5 text-xs sm:text-sm px-2 sm:px-3"
         >
-          <TrendingUp className="w-4 h-4" />
-          Top
+          <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Top</span>
         </Button>
         <div className="flex-1" />
-        <Button variant="outline" size="sm" className="h-8 gap-1.5">
+        <Button variant="outline" size="sm" className="h-7 sm:h-8 gap-1 sm:gap-1.5 px-2 sm:px-3">
           <Filter className="w-3.5 h-3.5" />
-          Filter
+          <span className="hidden sm:inline">Filter</span>
         </Button>
       </div>
 
@@ -236,39 +236,41 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
           >
             <div className="flex">
               {/* Vote Column */}
-              <div className="p-3 bg-muted/30 flex flex-col items-center justify-start">
+              <div className="p-2 sm:p-3 bg-muted/30 flex flex-col items-center justify-start">
                 <VoteButtons upvotes={item.upvotes} />
               </div>
 
               {/* Content Column */}
-              <div className="flex-1 p-3">
+              <div className="flex-1 p-2 sm:p-3">
                 {/* Type Badge + Meta */}
-                <div className="flex items-center gap-2 mb-2 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-2 text-[10px] sm:text-xs text-muted-foreground">
                   {item.type === "investigation" && (
-                    <Badge variant="outline" className="text-[9px] bg-primary/10 text-primary border-primary/30">
+                    <Badge variant="outline" className="text-[8px] sm:text-[9px] bg-primary/10 text-primary border-primary/30">
                       INVESTIGATION
                     </Badge>
                   )}
                   {item.type === "thread" && (
-                    <Badge variant="outline" className="text-[9px] bg-secondary">
+                    <Badge variant="outline" className="text-[8px] sm:text-[9px] bg-secondary">
                       DISCUSSION
                     </Badge>
                   )}
                   {item.type === "evidence" && (
-                    <Badge variant="outline" className="text-[9px] bg-cyan-500/10 text-cyan-400 border-cyan-500/30">
+                    <Badge variant="outline" className="text-[8px] sm:text-[9px] bg-cyan-500/10 text-cyan-400 border-cyan-500/30">
                       EVIDENCE
                     </Badge>
                   )}
                   <AuthorBadge author={item.author} authorType={item.author_type} />
-                  <span>•</span>
-                  <Clock className="w-3 h-3" />
-                  <span>{formatTimeAgo(item.created_at)}</span>
+                  <span className="hidden sm:inline">•</span>
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    <span>{formatTimeAgo(item.created_at)}</span>
+                  </div>
                 </div>
 
                 {/* Title */}
                 {item.title && (
                   <h3 
-                    className="font-semibold text-foreground mb-1 hover:text-primary cursor-pointer"
+                    className="font-semibold text-sm sm:text-base text-foreground mb-1 hover:text-primary cursor-pointer line-clamp-2"
                     onClick={() => item.type === "investigation" && onSelectInvestigation(item.data)}
                   >
                     {item.title}
@@ -276,7 +278,7 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
                 )}
 
                 {/* Content */}
-                <p className="text-sm text-muted-foreground line-clamp-3 mb-2">
+                <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3 mb-2">
                   {item.content}
                 </p>
 
