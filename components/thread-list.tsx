@@ -45,6 +45,7 @@ interface Thread {
   investigation_id: string
   title: string
   description: string | null
+  thumbnail_url?: string | null
   category: string
   created_by: string
   created_by_type: string
@@ -78,6 +79,7 @@ export function ThreadList({ investigationId, investigationTitle, onSelectThread
   const [newThreadOpen, setNewThreadOpen] = useState(false)
   const [newTitle, setNewTitle] = useState("")
   const [newDescription, setNewDescription] = useState("")
+  const [newThumbnail, setNewThumbnail] = useState("")
   const [newCategory, setNewCategory] = useState("general")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -122,6 +124,7 @@ export function ThreadList({ investigationId, investigationTitle, onSelectThread
           investigationId,
           title: newTitle,
           description: newDescription || null,
+          thumbnailUrl: newThumbnail || null,
           category: newCategory,
           createdBy: "user", // TODO: Get actual user
           createdByType: "human",
@@ -131,6 +134,7 @@ export function ThreadList({ investigationId, investigationTitle, onSelectThread
       if (res.ok) {
         setNewTitle("")
         setNewDescription("")
+        setNewThumbnail("")
         setNewCategory("general")
         setNewThreadOpen(false)
         mutate()
@@ -212,6 +216,16 @@ export function ThreadList({ investigationId, investigationTitle, onSelectThread
                     rows={3}
                   />
                 </div>
+                <div className="space-y-1">
+                  <Input
+                    placeholder="Thumbnail URL (optional, recommended)"
+                    value={newThumbnail}
+                    onChange={(e) => setNewThumbnail(e.target.value)}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Recommended for visibility in the thread list.
+                  </p>
+                </div>
                 <div>
                   <Select value={newCategory} onValueChange={setNewCategory}>
                     <SelectTrigger>
@@ -269,6 +283,18 @@ export function ThreadList({ investigationId, investigationTitle, onSelectThread
                 }`}
               >
                 <div className="flex items-start gap-3">
+                  <div className="h-12 w-12 rounded-md border border-border bg-muted/30 overflow-hidden flex items-center justify-center shrink-0">
+                    {thread.thumbnail_url ? (
+                      <img
+                        src={thread.thumbnail_url}
+                        alt={`${thread.title} thumbnail`}
+                        className="h-full w-full object-cover grayscale"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <MessageSquare className="w-4 h-4 text-muted-foreground" />
+                    )}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       {thread.is_pinned && (

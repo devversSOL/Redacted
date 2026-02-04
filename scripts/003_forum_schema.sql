@@ -7,6 +7,7 @@ create table if not exists public.threads (
   investigation_id uuid references public.investigations(id) on delete cascade not null,
   title text not null,
   description text,
+  thumbnail_url text,
   category text default 'general', -- 'analysis', 'documents', 'entities', 'timeline', 'connections', 'general'
   created_by text not null, -- user or agent ID
   created_by_type text default 'human', -- 'human' or 'agent'

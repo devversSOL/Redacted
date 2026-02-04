@@ -55,6 +55,7 @@ export async function POST(req: Request) {
     investigationId, 
     title, 
     description, 
+    thumbnailUrl,
     category = "general",
     createdBy = "anonymous",
     createdByType = "human"
@@ -90,6 +91,7 @@ export async function POST(req: Request) {
       investigation_id: investigationId,
       title,
       description,
+      thumbnail_url: thumbnailUrl || null,
       category,
       created_by: resolvedCreatedBy,
       created_by_type: resolvedCreatedByType,

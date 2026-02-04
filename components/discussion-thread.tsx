@@ -32,6 +32,7 @@ interface Thread {
   investigation_id: string
   title: string
   description: string | null
+  thumbnail_url: string | null
   category: string
   created_by: string
   created_by_type: "human" | "agent"
@@ -67,6 +68,7 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
   const [selectedThread, setSelectedThread] = useState<Thread | null>(null)
   const [newThreadTitle, setNewThreadTitle] = useState("")
   const [newThreadContent, setNewThreadContent] = useState("")
+  const [newThreadThumbnail, setNewThreadThumbnail] = useState("")
   const [newReply, setNewReply] = useState("")
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
   const [replyContent, setReplyContent] = useState("")
@@ -126,6 +128,7 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
           investigationId,
           title: newThreadTitle,
           description: newThreadContent,
+          thumbnailUrl: newThreadThumbnail || null,
           createdBy: "Anonymous",
           createdByType: "human"
         })
@@ -134,6 +137,7 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
       mutateThreads()
       setNewThreadTitle("")
       setNewThreadContent("")
+      setNewThreadThumbnail("")
       setShowNewThread(false)
       if (data.thread) setSelectedThread(data.thread)
     } finally {
@@ -257,24 +261,38 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
         </Button>
 
         <Card className="p-4">
-          <div className="flex items-center gap-2 mb-2">
-            {selectedThread.is_pinned && <Pin className="w-4 h-4 text-primary" />}
-            {selectedThread.is_locked && <Lock className="w-4 h-4 text-muted-foreground" />}
-            <Badge variant="outline" className="text-xs">{selectedThread.category}</Badge>
-          </div>
-          <h2 className="text-lg font-semibold mb-2">{selectedThread.title}</h2>
-          {selectedThread.description && (
-            <p className="text-sm text-muted-foreground mb-3">{selectedThread.description}</p>
-          )}
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span className={`flex items-center gap-1 ${selectedThread.created_by_type === "agent" ? "text-primary" : ""}`}>
-              {getAuthorIcon(selectedThread.created_by_type, selectedThread.created_by)}
-              {selectedThread.created_by}
-            </span>
-            <span>•</span>
-            <span>{formatTimeAgo(selectedThread.created_at)}</span>
-            <span>•</span>
-            <span>{selectedThread.post_count} replies</span>
+          <div className="flex items-start gap-3">
+            {selectedThread.thumbnail_url && (
+              <div className="w-16 h-16 rounded-md overflow-hidden border border-border bg-muted/30 flex-shrink-0">
+                <img
+                  src={selectedThread.thumbnail_url}
+                  alt={`${selectedThread.title} thumbnail`}
+                  className="h-full w-full object-cover grayscale"
+                  loading="lazy"
+                />
+              </div>
+            )}
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                {selectedThread.is_pinned && <Pin className="w-4 h-4 text-primary" />}
+                {selectedThread.is_locked && <Lock className="w-4 h-4 text-muted-foreground" />}
+                <Badge variant="outline" className="text-xs">{selectedThread.category}</Badge>
+              </div>
+              <h2 className="text-lg font-semibold mb-2">{selectedThread.title}</h2>
+              {selectedThread.description && (
+                <p className="text-sm text-muted-foreground mb-3">{selectedThread.description}</p>
+              )}
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <span className={`flex items-center gap-1 ${selectedThread.created_by_type === "agent" ? "text-primary" : ""}`}>
+                  {getAuthorIcon(selectedThread.created_by_type, selectedThread.created_by)}
+                  {selectedThread.created_by}
+                </span>
+                <span>•</span>
+                <span>{formatTimeAgo(selectedThread.created_at)}</span>
+                <span>•</span>
+                <span>{selectedThread.post_count} replies</span>
+              </div>
+            </div>
           </div>
         </Card>
 
@@ -381,8 +399,18 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
             placeholder="What do you want to discuss? Share findings, ask questions, or propose theories..."
             value={newThreadContent}
             onChange={(e) => setNewThreadContent(e.target.value)}
-            className="min-h-[100px] mb-3"
+            className="min-h-[100px] mb-2"
           />
+          <div className="space-y-1 mb-3">
+            <Input
+              placeholder="Thumbnail URL (optional, recommended)"
+              value={newThreadThumbnail}
+              onChange={(e) => setNewThreadThumbnail(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">
+              Optional but recommended for visibility in the thread list.
+            </p>
+          </div>
           <div className="flex justify-end gap-2">
             <Button variant="ghost" onClick={() => setShowNewThread(false)}>
               Cancel
@@ -409,9 +437,20 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
             onClick={() => setSelectedThread(thread)}
           >
             <div className="flex gap-3">
-              <div className="flex flex-col items-center justify-center min-w-[40px]">
-                <MessageSquare className="w-5 h-5 text-muted-foreground" />
-                <span className="text-sm font-bold mt-1">{thread.post_count}</span>
+              <div className="relative h-12 w-12 shrink-0 rounded-md border border-border bg-muted/30 overflow-hidden flex items-center justify-center">
+                {thread.thumbnail_url ? (
+                  <img
+                    src={thread.thumbnail_url}
+                    alt={`${thread.title} thumbnail`}
+                    className="h-full w-full object-cover grayscale"
+                    loading="lazy"
+                  />
+                ) : (
+                  <MessageSquare className="w-4 h-4 text-muted-foreground" />
+                )}
+                <span className="absolute -bottom-1 -right-1 bg-background text-[10px] font-medium px-1 rounded border border-border">
+                  {thread.post_count}
+                </span>
               </div>
               
               <div className="flex-1 min-w-0">

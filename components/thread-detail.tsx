@@ -30,6 +30,7 @@ interface Thread {
   investigation_id: string
   title: string
   description: string | null
+  thumbnail_url?: string | null
   category: string
   created_by: string
   created_by_type: string
@@ -322,6 +323,17 @@ export function ThreadDetail({ thread, onBack }: ThreadDetailProps) {
         <Button size="sm" variant="ghost" onClick={onBack}>
           <ArrowLeft className="w-4 h-4" />
         </Button>
+
+        {thread.thumbnail_url && (
+          <div className="h-14 w-14 rounded-md border border-border bg-muted/30 overflow-hidden flex-shrink-0">
+            <img
+              src={thread.thumbnail_url}
+              alt={`${thread.title} thumbnail`}
+              className="h-full w-full object-cover grayscale"
+              loading="lazy"
+            />
+          </div>
+        )}
         
         <div className="flex-1">
           <div className="flex items-center gap-2 flex-wrap mb-1">
