@@ -13,7 +13,7 @@ interface AsciiShaderProps {
 }
 
 const NUMBER_RAMP = "0123456789"
-const ASCII_RAMP = " .:-=+*#%@"
+const ASCII_RAMP = " .:+*#%@@@"
 const TARGET_FRAME_TIME = 16
 const ADAPTIVE_THRESHOLD = 20
 const ADAPTIVE_SAMPLE_COUNT = 10
@@ -32,7 +32,7 @@ export function AsciiShader({
   const animationRef = useRef<number>(0)
   const stateRef = useRef({
     time: 0,
-    cellSize: 14,
+    cellSize: 10,
     cols: 0,
     rows: 0,
     atlas: null as HTMLCanvasElement | null,
@@ -55,18 +55,20 @@ export function AsciiShader({
     const ctx = atlas.getContext("2d")!
     
     ctx.fillStyle = color
-    ctx.font = `bold ${cellH - 2}px "Courier New", monospace`
+    ctx.font = `bold ${cellH}px "Courier New", monospace`
     ctx.textBaseline = "top"
     ctx.textAlign = "center"
     
-    // Add slight glow for bloom effect base
+    // Add glow for bloom effect
     if (bloom) {
       ctx.shadowColor = color
-      ctx.shadowBlur = 4
+      ctx.shadowBlur = 8
+      ctx.shadowOffsetX = 0
+      ctx.shadowOffsetY = 0
     }
     
     for (let i = 0; i < ramp.length; i++) {
-      ctx.fillText(ramp[i], i * cellW + cellW / 2, 1)
+      ctx.fillText(ramp[i], i * cellW + cellW / 2, 0)
     }
     
     return atlas
@@ -88,13 +90,14 @@ export function AsciiShader({
     },
     
     plasma: (x: number, y: number, t: number): number => {
-      const v1 = Math.sin(x * 5 + t)
-      const v2 = Math.sin((y * 5 + t) * 0.5)
-      const v3 = Math.sin((x * 3 + y * 3 + t) * 0.5)
-      const cx = x + 0.5 * Math.sin(t * 0.3)
-      const cy = y + 0.5 * Math.cos(t * 0.4)
-      const v4 = Math.sin(Math.sqrt(cx * cx + cy * cy + 1) * 4)
-      return (v1 + v2 + v3 + v4 + 4) / 8
+      // Dramatic plasma with pulsing interference
+      const pulse = Math.sin(t * 2) * 0.3 + 0.7
+      const v1 = Math.sin(x * 8 + t * 2) * Math.cos(y * 6 - t)
+      const v2 = Math.sin(Math.sqrt((x * 2) ** 2 + (y * 2) ** 2) * 5 - t * 3)
+      const v3 = Math.sin((x + y) * 10 + t) * Math.sin((x - y) * 10 - t * 1.5)
+      const ripple = Math.sin(Math.sqrt(x * x + y * y) * 12 - t * 4) * 0.5
+      const warp = Math.sin(x * 4 + Math.sin(y * 3 + t) * 2) * Math.cos(y * 4 + Math.cos(x * 3 - t) * 2)
+      return Math.pow((v1 + v2 + v3 + ripple + warp + 5) / 10, 0.8) * pulse
     },
     
     tunnel: (x: number, y: number, t: number): number => {

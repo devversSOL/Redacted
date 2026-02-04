@@ -70,16 +70,16 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
 
   return (
     <div className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background to-secondary/20">
-      {/* ASCII Shader Background - Green wave numbers with bloom */}
+      {/* ASCII Shader Background - Mathematical plasma with bloom */}
       <AsciiShader 
-        mode="waves" 
-        speed={0.4} 
+        mode="plasma" 
+        speed={1.5} 
         density={1.5} 
-        opacity={0.18}
+        opacity={0.7}
         bloom={true}
         color="#22c55e"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/40 to-background/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-background/40" />
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]" />
       
       <div className="relative max-w-6xl mx-auto px-4 py-12 lg:py-16">
