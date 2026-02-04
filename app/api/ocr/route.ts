@@ -1,105 +1,58 @@
-import { generateText } from "ai"
-import { createAnthropic } from "@ai-sdk/anthropic"
-import { createOpenAI } from "@ai-sdk/openai"
-import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { createClient } from "@/lib/supabase/server"
 import { extractChunks, computeContentHash, detectRedactions } from "@/lib/chunk-extractor"
 
-// Force Node.js runtime (Edge doesn't support Buffer)
+// Force Node.js runtime for Buffer and pdf-parse
 export const runtime = "nodejs"
+export const maxDuration = 60
 
 export async function POST(req: Request) {
-  // Get API key and provider from headers for BYOK
-  const headerApiKey = req.headers.get("X-API-Key")
-  const rawProvider = req.headers.get("X-API-Provider")
-  const headerProvider: "openai" | "anthropic" | "google" =
-    rawProvider === "anthropic" || rawProvider === "google" || rawProvider === "openai"
-      ? rawProvider
-      : "openai"
-  const envKeys: Record<"openai" | "anthropic" | "google", string | undefined> = {
-    openai: process.env.OPENAI_API_KEY,
-    anthropic: process.env.ANTHROPIC_API_KEY,
-    google: process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-  }
-  const userApiKey = headerApiKey || envKeys[headerProvider]
-  const userProvider = headerProvider
-
-  const formData = await req.formData()
-  const file = formData.get("file") as File
-  const investigationId = formData.get("investigationId") as string
-
-  if (!file) {
-    return Response.json({ error: "No file provided" }, { status: 400 })
-  }
-
-  if (!userApiKey) {
-    return Response.json({
-      error: "No API key provided. Add a BYOK API key in the header UI or set a server env key (OPENAI_API_KEY / ANTHROPIC_API_KEY / GOOGLE_API_KEY)."
-    }, { status: 400 })
-  }
-
   try {
-    // Convert file to base64
-    const bytes = await file.arrayBuffer()
-    const base64 = Buffer.from(bytes).toString("base64")
-    const mimeType = file.type || "image/png"
+    const formData = await req.formData()
+    const file = formData.get("file") as File
+    const investigationId = formData.get("investigationId") as string
 
-    // Create provider with BYOK key - support multiple providers
-    let model
-    let modelName = "unknown"
-    
-    switch (userProvider) {
-      case "anthropic":
-        const anthropicProvider = createAnthropic({ apiKey: userApiKey })
-        model = anthropicProvider("claude-sonnet-4-20250514")
-        modelName = "claude-sonnet-4"
-        break
-      case "google":
-        const googleProvider = createGoogleGenerativeAI({ apiKey: userApiKey })
-        model = googleProvider("gemini-2.0-flash-001")
-        modelName = "gemini-2.0-flash"
-        break
-      case "openai":
-      default:
-        const openaiProvider = createOpenAI({ apiKey: userApiKey })
-        model = openaiProvider("gpt-4o")
-        modelName = "gpt-4o"
-        break
+    if (!file) {
+      return Response.json({ error: "No file provided" }, { status: 400 })
     }
 
-    // Use AI Vision to extract text from image
-    const { text: ocrText } = await generateText({
-      model,
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "image",
-              image: `data:${mimeType};base64,${base64}`,
-            },
-            {
-              type: "text",
-              text: `You are an OCR specialist. Extract ALL text from this document image exactly as it appears. 
-              
-Instructions:
-- Preserve the original formatting, line breaks, and structure as much as possible
-- Include all visible text, headers, footers, stamps, handwritten notes
-- Mark any redacted/blacked out sections as [REDACTED]
-- Mark any illegible text as [ILLEGIBLE]
-- Do not add any commentary or interpretation, just extract the raw text
-- If this appears to be a form or table, preserve the structure using spacing or markdown tables`,
-            },
-          ],
-        },
-      ],
-    })
-
-    // Compute content hash for integrity verification
-    const contentHash = computeContentHash(ocrText)
+    const bytes = await file.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+    const mimeType = file.type || "application/octet-stream"
     
-    // Detect redactions in the extracted text
-    const redactions = detectRedactions(ocrText)
+    let extractedText = ""
+    let pageCount = 1
+
+    // Handle PDFs with pdf-parse
+    if (mimeType === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")) {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const pdfParse = require("pdf-parse")
+        const pdfData = await pdfParse(buffer)
+        extractedText = pdfData.text || ""
+        pageCount = pdfData.numpages || 1
+      } catch (pdfError) {
+        console.error("PDF parsing error:", pdfError)
+        extractedText = `[PDF document: ${file.name}]\n\nText extraction failed. The document has been uploaded for manual review.`
+      }
+    } 
+    // Handle text files
+    else if (mimeType.startsWith("text/") || file.name.match(/\.(txt|md|csv|json|xml)$/i)) {
+      extractedText = buffer.toString("utf-8")
+    }
+    // Handle images - store metadata only (no AI OCR)
+    else if (mimeType.startsWith("image/")) {
+      extractedText = `[Image document: ${file.name}]\n\nThis is an image file. Text content requires manual transcription or AI-assisted OCR.`
+    }
+    // Unknown file type
+    else {
+      extractedText = `[Document: ${file.name}]\n\nFile type: ${mimeType}\nSize: ${file.size} bytes\n\nContent extraction not available for this file type.`
+    }
+
+    // Compute content hash
+    const contentHash = computeContentHash(extractedText)
+    
+    // Detect redactions in extracted text
+    const redactions = detectRedactions(extractedText)
 
     // Store document in Supabase
     const supabase = await createClient()
@@ -109,19 +62,19 @@ Instructions:
       .insert({
         investigation_id: investigationId || null,
         filename: file.name,
-        file_url: "", // Empty - we process directly without storage
-        file_type: file.type || "image/png",
-        ocr_text: ocrText,
-        ocr_status: "completed",
+        file_url: "",
+        file_type: mimeType,
+        ocr_text: extractedText,
+        ocr_status: extractedText.includes("[") && extractedText.includes("extraction") ? "pending" : "completed",
         content_hash: contentHash,
-        page_count: 1,
+        page_count: pageCount,
         status: "processed",
         metadata: {
           size: file.size,
-          type: file.type,
-          model_used: modelName,
+          type: mimeType,
           processed_at: new Date().toISOString(),
           redaction_count: redactions.length,
+          extraction_method: mimeType === "application/pdf" ? "pdf-parse" : "direct",
         },
       })
       .select()
@@ -129,11 +82,11 @@ Instructions:
 
     if (docError) {
       console.error("Error storing document:", docError)
-      return Response.json({ error: "Failed to store document" }, { status: 500 })
+      return Response.json({ error: "Failed to store document", details: docError.message }, { status: 500 })
     }
 
-    // Extract and store chunks with page/offset information
-    const chunkResult = extractChunks(doc.id, ocrText)
+    // Extract and store chunks
+    const chunkResult = extractChunks(doc.id, extractedText)
     
     if (chunkResult.chunks.length > 0) {
       const chunksToInsert = chunkResult.chunks.map(chunk => ({
@@ -152,46 +105,30 @@ Instructions:
 
       if (chunkError) {
         console.error("Error storing chunks:", chunkError)
-        // Non-fatal - document is still saved
       }
 
-      // Update document with actual page count
       await supabase
         .from("documents")
-        .update({ page_count: chunkResult.page_count })
+        .update({ page_count: chunkResult.page_count || pageCount })
         .eq("id", doc.id)
     }
-
-    // Log agent activity
-    await supabase.from("agent_activity").insert({
-      agent_id: "ocr-agent",
-      agent_model: modelName,
-      action_type: "document_processed",
-      description: `Processed document: ${file.name}`,
-      investigation_id: investigationId || null,
-      metadata: {
-        document_id: doc.id,
-        text_length: ocrText.length,
-        chunk_count: chunkResult.chunks.length,
-        page_count: chunkResult.page_count,
-        redaction_count: redactions.length,
-        content_hash: contentHash,
-      },
-    })
 
     return Response.json({
       success: true,
       document: {
         ...doc,
         content_hash: contentHash,
-        page_count: chunkResult.page_count,
+        page_count: chunkResult.page_count || pageCount,
       },
-      text: ocrText,
+      text: extractedText,
       chunks: chunkResult.chunks.length,
       redactions: redactions.length,
     })
-  } catch (error) {
-    console.error("OCR Error:", error)
-    return Response.json({ error: "OCR processing failed" }, { status: 500 })
+  } catch (error: any) {
+    console.error("Document upload error:", error)
+    return Response.json({ 
+      error: "Document processing failed", 
+      details: error?.message || "Unknown error" 
+    }, { status: 500 })
   }
 }
