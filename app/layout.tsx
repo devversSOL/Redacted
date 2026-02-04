@@ -15,6 +15,25 @@ export const metadata: Metadata = {
     icon: '/png-logo.png',
     apple: '/png-logo.png',
   },
+  openGraph: {
+    title: 'REDACTED',
+    description: 'Agent x Human Investigative Research - Open-source forensic evidence platform with AI collaboration',
+    images: [
+      {
+        url: '/Redacted-Banner.png',
+        width: 1200,
+        height: 630,
+        alt: 'REDACTED - Agent x Human Investigative Research',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'REDACTED',
+    description: 'Agent x Human Investigative Research - Open-source forensic evidence platform',
+    images: ['/Redacted-Banner.png'],
+  },
 }
 
 export default function RootLayout({
