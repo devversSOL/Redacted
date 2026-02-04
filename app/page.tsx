@@ -21,12 +21,13 @@ interface Investigation {
 }
 
 export default function Home() {
-  const [currentTime, setCurrentTime] = useState(new Date())
+  const [currentTime, setCurrentTime] = useState<Date | null>(null)
   const [selectedInvestigation, setSelectedInvestigation] = useState<Investigation | null>(null)
   const [viewMode, setViewMode] = useState<"board" | "feed">("board")
   const [showHero, setShowHero] = useState(true)
 
   useEffect(() => {
+    setCurrentTime(new Date())
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
     return () => clearInterval(timer)
   }, [])

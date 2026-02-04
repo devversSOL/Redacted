@@ -3,7 +3,7 @@
 import { Activity, Radio, Shield, Terminal } from "lucide-react"
 
 interface HeaderProps {
-  currentTime: Date
+  currentTime: Date | null
 }
 
 export function Header({ currentTime }: HeaderProps) {
@@ -54,9 +54,9 @@ export function Header({ currentTime }: HeaderProps) {
           <div className="flex items-center gap-3 text-xs border-l border-border pl-4">
             <div className="flex items-center gap-2">
               <Radio className="h-3 w-3 text-primary" />
-              <span className="text-primary font-medium">{formatTime(currentTime)}</span>
+              <span className="text-primary font-medium">{currentTime ? formatTime(currentTime) : "--:--:--"}</span>
             </div>
-            <span className="text-muted-foreground">{formatDate(currentTime)}</span>
+            <span className="text-muted-foreground">{currentTime ? formatDate(currentTime) : "--/--/----"}</span>
           </div>
 
           <div className="flex items-center gap-2 text-xs">
