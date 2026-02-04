@@ -24,7 +24,6 @@ import {
   Lock,
   Sparkles
 } from "lucide-react"
-import { AsciiShader } from "./ascii-shader"
 
 interface HeroSectionProps {
   onGetStarted?: () => void
@@ -70,18 +69,12 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
 
   return (
     <div className="relative overflow-hidden border-b border-border bg-background">
-      {/* ASCII Shader Background - Matrix falling numbers */}
-      <div className="absolute inset-0 z-0">
-        <AsciiShader
-          mode="matrix"
-          speed={0.8}
-          density={0.8}
-          opacity={0.6}
-          bloom={true}
-          color="#00ff88"
-        />
+      {/* Lightweight CSS grid pattern background */}
+      <div className="absolute inset-0 z-0 opacity-[0.15]">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] bg-[size:40px_40px] text-primary/30" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,hsl(var(--background))_70%)]" />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-background/40 to-background/80 z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/50 to-background/90 z-[1]" />
       
       <div className="relative z-[2] max-w-7xl mx-auto px-4 py-14 lg:py-20">
         <div className="text-center lg:text-left space-y-6">
