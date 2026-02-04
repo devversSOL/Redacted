@@ -6,8 +6,7 @@ import { HeroSection } from "@/components/hero-section"
 import { InvestigationBoard } from "@/components/investigation-board"
 import { EvidenceFeed } from "@/components/evidence-feed"
 import { AgentPanel } from "@/components/agent-panel"
-import { InvestigationDetail } from "@/components/investigation-detail"
-import { DiscussionThread } from "@/components/discussion-thread"
+import { InvestigationWorkspace } from "@/components/investigation-workspace"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, LayoutGrid, List } from "lucide-react"
 
@@ -55,16 +54,7 @@ export default function Home() {
               Back to Investigations
             </Button>
             
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 lg:gap-6">
-              <div className="xl:col-span-2 space-y-4">
-                <InvestigationDetail investigation={selectedInvestigation} />
-                <DiscussionThread investigationId={selectedInvestigation.id} />
-              </div>
-              <div className="xl:col-span-1 space-y-4">
-                <AgentPanel investigationId={selectedInvestigation.id} />
-                <EvidenceFeed investigation={selectedInvestigation} />
-              </div>
-            </div>
+            <InvestigationWorkspace investigation={selectedInvestigation} />
           </div>
         ) : (
           <div className="space-y-4">
