@@ -70,16 +70,17 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
 
   return (
     <div className="relative overflow-hidden border-b border-border bg-background">
-      {/* ASCII Shader Background - Calibrated for monochrome */}
+      {/* ASCII Shader Background - Geometric layer */}
       <AsciiShader
-        mode="plasma"
-        speed={0.3}
-        density={1}
-        opacity={0.12}
+        mode="grid"
+        speed={0.35}
+        density={1.2}
+        opacity={0.22}
         bloom={false}
-        color="#9ca3af"
+        color="#94a3b8"
+        className="mix-blend-soft-light"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background/85" />
       
       <div className="relative max-w-7xl mx-auto px-4 py-14 lg:py-20">
         <div className="text-center lg:text-left space-y-6">
