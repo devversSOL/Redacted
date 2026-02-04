@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
 import { Card } from "@/components/ui/card"
@@ -20,7 +20,8 @@ import {
   RefreshCw,
   FileSearch,
   Database,
-  Link2
+  Link2,
+  Key
 } from "lucide-react"
 import {
   Select,
@@ -29,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { getAuthHeaders, hasAnyKey } from "@/lib/byok"
 
 interface AgentChatProps {
   investigationId?: string
@@ -38,12 +40,28 @@ export function AgentChat({ investigationId }: AgentChatProps) {
   const [agentType, setAgentType] = useState<"claude" | "gpt" | "gemini">("claude")
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [inputValue, setInputValue] = useState("")
+  const [hasKeys, setHasKeys] = useState(false)
 
-  const { messages, sendMessage, status, setMessages } = useChat({
-    transport: new DefaultChatTransport({
+  // Check for API keys on mount and when window regains focus
+  useEffect(() => {
+    const checkKeys = () => setHasKeys(hasAnyKey())
+    checkKeys()
+    window.addEventListener("focus", checkKeys)
+    return () => window.removeEventListener("focus", checkKeys)
+  }, [])
+
+  // Create transport with BYOK headers
+  const transport = useMemo(() => {
+    const headers = getAuthHeaders(agentType)
+    return new DefaultChatTransport({
       api: "/api/agents/chat",
       body: { investigationId, agentType },
-    }),
+      headers,
+    })
+  }, [investigationId, agentType])
+
+  const { messages, sendMessage, status, setMessages } = useChat({
+    transport,
   })
 
   const scrollToBottom = () => {

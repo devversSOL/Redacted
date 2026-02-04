@@ -1,6 +1,7 @@
 "use client"
 
-import { Activity, Radio, Shield, Terminal } from "lucide-react"
+import { Activity, Radio, Shield } from "lucide-react"
+import { APIKeySettings } from "@/components/api-key-settings"
 
 interface HeaderProps {
   currentTime: Date | null
@@ -63,6 +64,8 @@ export function Header({ currentTime }: HeaderProps) {
             <Shield className="h-3 w-3 text-primary" />
             <span className="text-primary">SECURE</span>
           </div>
+
+          <APIKeySettings />
         </div>
       </div>
 

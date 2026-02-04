@@ -8,6 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@ai-sdk/anthropic':
+        specifier: ^3.0.36
+        version: 3.0.36(zod@3.25.76)
+      '@ai-sdk/google':
+        specifier: ^3.0.20
+        version: 3.0.20(zod@3.25.76)
+      '@ai-sdk/openai':
+        specifier: ^3.0.25
+        version: 3.0.25(zod@3.25.76)
       '@ai-sdk/react':
         specifier: 3.0.70
         version: 3.0.70(react@19.2.0)(zod@3.25.76)
@@ -210,8 +219,26 @@ importers:
 
 packages:
 
+  '@ai-sdk/anthropic@3.0.36':
+    resolution: {integrity: sha512-GHQccfwC0j1JltN9M47RSlBpOyHoUam0mvbYMf8zpE0UD1tzIX5sDw2m/8nRlrTz6wGuKfaDxmoC3XH7uhTrXg==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
   '@ai-sdk/gateway@3.0.32':
     resolution: {integrity: sha512-7clZRr07P9rpur39t1RrbIe7x8jmwnwUWI8tZs+BvAfX3NFgdSVGGIaT7bTz2pb08jmLXzTSDbrOTqAQ7uBkBQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/google@3.0.20':
+    resolution: {integrity: sha512-bVGsulEr6JiipAFlclo9bjL5WaUV0iCSiiekLt+PY6pwmtJeuU2GaD9DoE3OqR8LN2W779mU13IhVEzlTupf8g==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/openai@3.0.25':
+    resolution: {integrity: sha512-DsaN46R98+D1W3lU3fKuPU3ofacboLaHlkAwxJPgJ8eup1AJHmPK1N1y10eJJbJcF6iby8Tf/vanoZxc9JPUfw==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -2145,11 +2172,29 @@ packages:
 
 snapshots:
 
+  '@ai-sdk/anthropic@3.0.36(zod@3.25.76)':
+    dependencies:
+      '@ai-sdk/provider': 3.0.7
+      '@ai-sdk/provider-utils': 4.0.13(zod@3.25.76)
+      zod: 3.25.76
+
   '@ai-sdk/gateway@3.0.32(zod@3.25.76)':
     dependencies:
       '@ai-sdk/provider': 3.0.7
       '@ai-sdk/provider-utils': 4.0.13(zod@3.25.76)
       '@vercel/oidc': 3.1.0
+      zod: 3.25.76
+
+  '@ai-sdk/google@3.0.20(zod@3.25.76)':
+    dependencies:
+      '@ai-sdk/provider': 3.0.7
+      '@ai-sdk/provider-utils': 4.0.13(zod@3.25.76)
+      zod: 3.25.76
+
+  '@ai-sdk/openai@3.0.25(zod@3.25.76)':
+    dependencies:
+      '@ai-sdk/provider': 3.0.7
+      '@ai-sdk/provider-utils': 4.0.13(zod@3.25.76)
       zod: 3.25.76
 
   '@ai-sdk/provider-utils@4.0.13(zod@3.25.76)':

@@ -1,18 +1,40 @@
 import { streamText, tool, convertToModelMessages } from "ai"
+import { createAnthropic } from "@ai-sdk/anthropic"
+import { createOpenAI } from "@ai-sdk/openai"
+import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { z } from "zod"
 import { createClient } from "@/lib/supabase/server"
 
-const AGENT_MODELS = {
-  claude: "anthropic/claude-sonnet-4",
-  gpt: "openai/gpt-4o",
-  gemini: "google/gemini-2.0-flash-001",
-} as const
+function getModel(agentType: string, apiKey: string | null) {
+  // BYOK: Create provider with user key if available, otherwise fall back to env
+  switch (agentType) {
+    case "claude": {
+      const provider = createAnthropic({ apiKey: apiKey || undefined })
+      return provider("claude-sonnet-4-20250514")
+    }
+    case "gpt": {
+      const provider = createOpenAI({ apiKey: apiKey || undefined })
+      return provider("gpt-4o")
+    }
+    case "gemini": {
+      const provider = createGoogleGenerativeAI({ apiKey: apiKey || undefined })
+      return provider("gemini-2.0-flash-001")
+    }
+    default: {
+      const provider = createAnthropic({ apiKey: apiKey || undefined })
+      return provider("claude-sonnet-4-20250514")
+    }
+  }
+}
 
 export async function POST(req: Request) {
+  // BYOK: Get API key from request header
+  const userApiKey = req.headers.get("X-API-Key")
+  
   const { messages, investigationId, agentType = "claude" } = await req.json()
   
   const supabase = await createClient()
-  const model = AGENT_MODELS[agentType as keyof typeof AGENT_MODELS] || AGENT_MODELS.claude
+  const model = getModel(agentType, userApiKey)
   const agentId = `${agentType}-chat-${Date.now()}`
 
   // Fetch investigation context
