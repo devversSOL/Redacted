@@ -1,11 +1,14 @@
 import { generateText } from "ai"
 import { createAnthropic } from "@ai-sdk/anthropic"
+import { createOpenAI } from "@ai-sdk/openai"
+import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { createClient } from "@/lib/supabase/server"
 import { extractChunks, computeContentHash, detectRedactions } from "@/lib/chunk-extractor"
 
 export async function POST(req: Request) {
-  // Get API key from header for BYOK
+  // Get API key and provider from headers for BYOK
   const userApiKey = req.headers.get("X-API-Key")
+  const userProvider = req.headers.get("X-API-Provider") || "openai" // Default to OpenAI
 
   const formData = await req.formData()
   const file = formData.get("file") as File
@@ -15,15 +18,40 @@ export async function POST(req: Request) {
     return Response.json({ error: "No file provided" }, { status: 400 })
   }
 
+  if (!userApiKey) {
+    return Response.json({ 
+      error: "No API key provided. Go to API Keys in the header and add your OpenAI, Anthropic, or Google AI key." 
+    }, { status: 400 })
+  }
+
   try {
     // Convert file to base64
     const bytes = await file.arrayBuffer()
     const base64 = Buffer.from(bytes).toString("base64")
     const mimeType = file.type || "image/png"
 
-    // Create provider with BYOK key
-    const provider = createAnthropic({ apiKey: userApiKey || undefined })
-    const model = provider("claude-sonnet-4-20250514")
+    // Create provider with BYOK key - support multiple providers
+    let model
+    let modelName = "unknown"
+    
+    switch (userProvider) {
+      case "anthropic":
+        const anthropicProvider = createAnthropic({ apiKey: userApiKey })
+        model = anthropicProvider("claude-sonnet-4-20250514")
+        modelName = "claude-sonnet-4"
+        break
+      case "google":
+        const googleProvider = createGoogleGenerativeAI({ apiKey: userApiKey })
+        model = googleProvider("gemini-2.0-flash-001")
+        modelName = "gemini-2.0-flash"
+        break
+      case "openai":
+      default:
+        const openaiProvider = createOpenAI({ apiKey: userApiKey })
+        model = openaiProvider("gpt-4o")
+        modelName = "gpt-4o"
+        break
+    }
 
     // Use AI Vision to extract text from image
     const { text: ocrText } = await generateText({
@@ -77,7 +105,7 @@ Instructions:
         metadata: {
           size: file.size,
           type: file.type,
-          model_used: "claude-sonnet-4",
+          model_used: modelName,
           processed_at: new Date().toISOString(),
           redaction_count: redactions.length,
         },

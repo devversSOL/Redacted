@@ -71,3 +71,21 @@ export function getAuthHeaders(agentType: "claude" | "gpt" | "gemini"): Record<s
     "X-API-Provider": provider,
   }
 }
+
+// Get headers for the first available provider (for OCR/general use)
+export function getFirstAvailableHeaders(): Record<string, string> {
+  const keys = getStoredKeys()
+  
+  // Priority: OpenAI > Anthropic > Google (OpenAI GPT-4o is best for vision)
+  if (keys.openai) {
+    return { "X-API-Key": keys.openai, "X-API-Provider": "openai" }
+  }
+  if (keys.anthropic) {
+    return { "X-API-Key": keys.anthropic, "X-API-Provider": "anthropic" }
+  }
+  if (keys.google) {
+    return { "X-API-Key": keys.google, "X-API-Provider": "google" }
+  }
+  
+  return {}
+}

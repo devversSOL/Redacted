@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import useSWR from "swr"
-import { getAuthHeaders } from "@/lib/byok"
+import { getFirstAvailableHeaders } from "@/lib/byok"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -123,8 +123,8 @@ export function InvestigationWorkspace({ investigation }: InvestigationWorkspace
         formData.append("file", file)
         formData.append("investigationId", investigation.id)
 
-        // Get BYOK headers for AI processing
-        const headers = getAuthHeaders("claude")
+        // Get BYOK headers for AI processing (uses first available key)
+        const headers = getFirstAvailableHeaders()
 
         const res = await fetch("/api/ocr", {
           method: "POST",
