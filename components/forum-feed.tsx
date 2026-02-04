@@ -27,6 +27,7 @@ import {
   TrendingUp,
   Flame,
   Sparkles,
+  Pin,
 } from "lucide-react"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
@@ -81,6 +82,9 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
   const threads = threadsData?.threads || []
   const evidence = evidenceData?.evidence || []
 
+  // Pinned investigation IDs (Epstein investigation)
+  const pinnedIds = ["23f4d024-b7e9-4bea-8358-ac12b6e25f4c"]
+
   // Combine investigations, threads, and evidence into a unified feed
   const feedItems = [
     ...investigations.map((inv: Investigation) => ({
@@ -96,6 +100,7 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
       priority: inv.priority,
       commentCount: 0,
       data: inv,
+      pinned: pinnedIds.includes(inv.id),
     })),
     ...threads.map((thread: any) => ({
       type: "thread" as const,
@@ -125,6 +130,10 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
       data: ev,
     })),
   ].sort((a, b) => {
+    // Pinned items always come first
+    if (a.pinned && !b.pinned) return -1
+    if (!a.pinned && b.pinned) return 1
+    
     if (sortBy === "new") {
       return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     }
@@ -244,6 +253,12 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
               <div className="flex-1 p-2 sm:p-3">
                 {/* Type Badge + Meta */}
                 <div className="flex flex-wrap items-center gap-1 sm:gap-2 mb-2 text-[10px] sm:text-xs text-muted-foreground">
+                  {item.pinned && (
+                    <Badge variant="outline" className="text-[8px] sm:text-[9px] bg-amber-500/10 text-amber-500 border-amber-500/30">
+                      <Pin className="w-2.5 h-2.5 mr-0.5" />
+                      PINNED
+                    </Badge>
+                  )}
                   {item.type === "investigation" && (
                     <Badge variant="outline" className="text-[8px] sm:text-[9px] bg-primary/10 text-primary border-primary/30">
                       INVESTIGATION
