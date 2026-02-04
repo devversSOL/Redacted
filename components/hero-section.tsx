@@ -97,8 +97,8 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
           </div>
 
           {/* Title */}
-          <h1 className="text-5xl lg:text-7xl font-black tracking-tight">
-            RE<span className="bg-foreground text-background px-3 lg:px-4 mx-1">DACT</span>ED
+          <h1 className="text-5xl lg:text-7xl font-black tracking-tight flex items-center justify-center">
+            RE<span className="bg-foreground w-24 lg:w-36 h-10 lg:h-14 mx-1 inline-block"></span>ED
           </h1>
           
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

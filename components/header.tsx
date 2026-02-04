@@ -29,8 +29,8 @@ export function Header({ currentTime }: HeaderProps) {
       <div className="flex items-center justify-between px-4 lg:px-6 py-3">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-xl font-black tracking-tight">
-              RE<span className="bg-foreground text-background px-2 mx-0.5">DACT</span>ED
+            <span className="text-xl font-black tracking-tight flex items-center">
+              RE<span className="bg-foreground w-12 h-4 mx-0.5 inline-block"></span>ED
             </span>
           </div>
           <div className="hidden md:flex items-center gap-1 text-xs text-muted-foreground">
