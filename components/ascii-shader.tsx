@@ -146,11 +146,11 @@ export function AsciiShader({
     },
     
     matrix: (x: number, y: number, t: number): number => {
-      // Static grid with gentle pulse - no parallax/falling motion
-      const gridX = Math.sin(x * 8) * 0.5 + 0.5
-      const gridY = Math.sin(y * 6) * 0.5 + 0.5
-      const pulse = Math.sin(t * 0.5) * 0.1 + 0.9
-      return gridX * gridY * pulse * 0.8
+      // Gentle flowing wave pattern - smooth horizontal movement
+      const wave1 = Math.sin(x * 6 + t * 0.3) * 0.4
+      const wave2 = Math.sin(y * 4 + t * 0.2) * 0.3
+      const flow = Math.sin(x * 3 - t * 0.15) * 0.2
+      return (wave1 + wave2 + flow + 1) / 2 * 0.7
     },
   }
 
