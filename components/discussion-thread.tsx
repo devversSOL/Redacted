@@ -8,13 +8,6 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
   ArrowBigUp,
   ArrowBigDown,
   MessageSquare,
@@ -30,9 +23,6 @@ import {
   Loader2,
   Pin,
   Lock,
-  Plus,
-  ArrowLeft,
-  ChevronRight,
 } from "lucide-react"
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
@@ -83,7 +73,7 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
   const [replyingTo, setReplyingTo] = useState<string | null>(null)
   const [replyContent, setReplyContent] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [newThreadOpen, setNewThreadOpen] = useState(false)
+  const [showNewThread, setShowNewThread] = useState(false)
 
   const { data: threadsData, mutate: mutateThreads } = useSWR<{ threads: Thread[] }>(
     `/api/threads?investigationId=${investigationId}&sort=${sortMode}`,
@@ -148,7 +138,7 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
       setNewThreadTitle("")
       setNewThreadContent("")
       setNewThreadThumbnail("")
-      setNewThreadOpen(false)
+      setShowNewThread(false)
       if (data.thread) setSelectedThread(data.thread)
     } finally {
       setIsSubmitting(false)
@@ -185,44 +175,40 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
   const renderPost = (post: Post, depth = 0) => (
     <div 
       key={post.id} 
-      className={`${depth > 0 ? "ml-6 border-l-2 border-border/30 pl-4" : ""}`}
+      className={`${depth > 0 ? "ml-6 border-l-2 border-border/50 pl-4" : ""}`}
     >
-      <div className="py-4">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-          <div className={`w-6 h-6 rounded-full flex items-center justify-center ${post.author_type === "agent" ? "bg-primary/10" : "bg-muted"}`}>
+      <div className="py-3">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+          <span className={`flex items-center gap-1 ${post.author_type === "agent" ? "text-primary" : ""}`}>
             {getAuthorIcon(post.author_type, post.author_id)}
-          </div>
-          <span className={`font-medium ${post.author_type === "agent" ? "text-foreground" : ""}`}>
-            {post.author_id}
+            <span className="font-medium">{post.author_id}</span>
           </span>
           {post.author_type === "agent" && (
-            <Badge variant="secondary" className="text-[10px] px-1.5 py-0 font-mono">
+            <Badge variant="outline" className="text-[10px] px-1 py-0 text-primary border-primary/30">
               AGENT
             </Badge>
           )}
-          <span className="text-muted-foreground/60">•</span>
+          <span>•</span>
           <span>{formatTimeAgo(post.created_at)}</span>
         </div>
         
-        <p className="text-sm text-foreground/90 mb-3 whitespace-pre-wrap leading-relaxed pl-8">
-          {post.content}
-        </p>
+        <p className="text-sm text-foreground/90 mb-2 whitespace-pre-wrap">{post.content}</p>
         
-        <div className="flex items-center gap-2 pl-8">
-          <div className="flex items-center rounded-full border border-border/60 bg-muted/30">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 w-7 p-0 rounded-l-full hover:bg-primary/10"
+              className="h-6 w-6 p-0 hover:text-primary hover:bg-primary/10"
               onClick={() => handleVote(post.id, "up")}
             >
               <ArrowBigUp className="w-4 h-4" />
             </Button>
-            <span className="text-xs font-medium min-w-[24px] text-center px-1">{post.upvotes - post.downvotes}</span>
+            <span className="text-xs font-medium min-w-[20px] text-center">{post.upvotes - post.downvotes}</span>
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 w-7 p-0 rounded-r-full hover:bg-destructive/10"
+              className="h-6 w-6 p-0 hover:text-destructive hover:bg-destructive/10"
               onClick={() => handleVote(post.id, "down")}
             >
               <ArrowBigDown className="w-4 h-4" />
@@ -232,7 +218,7 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
           <Button
             variant="ghost"
             size="sm"
-            className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+            className="h-6 px-2 text-xs"
             onClick={() => setReplyingTo(replyingTo === post.id ? null : post.id)}
           >
             <Reply className="w-3 h-3 mr-1" />
@@ -241,56 +227,43 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
         </div>
         
         {replyingTo === post.id && (
-          <div className="mt-3 pl-8 flex gap-2">
+          <div className="mt-3 flex gap-2">
             <Textarea
               placeholder="Write a reply..."
               value={replyContent}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReplyContent(e.target.value)}
-              className="min-h-[60px] text-sm flex-1"
+              onChange={(e) => setReplyContent(e.target.value)}
+              className="min-h-[60px] text-sm"
             />
-            <div className="flex flex-col gap-1">
-              <Button
-                size="sm"
-                onClick={() => handleSubmitReply(post.id)}
-                disabled={!replyContent.trim() || isSubmitting}
-                className="h-8"
-              >
-                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setReplyingTo(null)}
-                className="h-8 text-xs"
-              >
-                Cancel
-              </Button>
-            </div>
+            <Button
+              size="sm"
+              onClick={() => handleSubmitReply(post.id)}
+              disabled={!replyContent.trim() || isSubmitting}
+            >
+              {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+            </Button>
           </div>
         )}
       </div>
     </div>
   )
 
-  // Thread detail view
+  // Thread view (single thread with posts)
   if (selectedThread) {
     return (
-      <Card className="overflow-hidden">
-        {/* Thread Header */}
-        <div className="border-b border-border/60 bg-muted/20 px-4 py-3">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setSelectedThread(null)}
-            className="text-muted-foreground hover:text-foreground -ml-2 mb-2"
-          >
-            <ArrowLeft className="w-4 h-4 mr-1" />
-            Back to threads
-          </Button>
-          
-          <div className="flex items-start gap-4">
+      <div className="space-y-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setSelectedThread(null)}
+          className="text-muted-foreground"
+        >
+          ← Back to threads
+        </Button>
+
+        <Card className="p-4">
+          <div className="flex items-start gap-3">
             {selectedThread.thumbnail_url && (
-              <div className="w-20 h-20 rounded-lg overflow-hidden border border-border bg-muted/30 flex-shrink-0">
+              <div className="w-16 h-16 rounded-md overflow-hidden border border-border bg-muted/30 flex-shrink-0">
                 <img
                   src={selectedThread.thumbnail_url}
                   alt={`${selectedThread.title} thumbnail`}
@@ -299,297 +272,225 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
                 />
               </div>
             )}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                {selectedThread.is_pinned && (
-                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                    <Pin className="w-3 h-3 mr-0.5" />
-                    Pinned
-                  </Badge>
-                )}
-                {selectedThread.is_locked && (
-                  <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground">
-                    <Lock className="w-3 h-3 mr-0.5" />
-                    Locked
-                  </Badge>
-                )}
-                <Badge variant="outline" className="text-[10px] px-1.5 py-0 font-mono uppercase tracking-wide">
-                  {selectedThread.category}
-                </Badge>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                {selectedThread.is_pinned && <Pin className="w-4 h-4 text-primary" />}
+                {selectedThread.is_locked && <Lock className="w-4 h-4 text-muted-foreground" />}
+                <Badge variant="outline" className="text-xs">{selectedThread.category}</Badge>
               </div>
-              <h2 className="text-xl font-semibold mb-2">{selectedThread.title}</h2>
+              <h2 className="text-lg font-semibold mb-2">{selectedThread.title}</h2>
               {selectedThread.description && (
                 <p className="text-sm text-muted-foreground mb-3">{selectedThread.description}</p>
               )}
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <span className={`flex items-center gap-1 ${selectedThread.created_by_type === "agent" ? "text-foreground" : ""}`}>
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center ${selectedThread.created_by_type === "agent" ? "bg-primary/10" : "bg-muted"}`}>
-                    {getAuthorIcon(selectedThread.created_by_type, selectedThread.created_by)}
-                  </div>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <span className={`flex items-center gap-1 ${selectedThread.created_by_type === "agent" ? "text-primary" : ""}`}>
+                  {getAuthorIcon(selectedThread.created_by_type, selectedThread.created_by)}
                   {selectedThread.created_by}
                 </span>
-                <span className="text-muted-foreground/40">•</span>
+                <span>•</span>
                 <span>{formatTimeAgo(selectedThread.created_at)}</span>
-                <span className="text-muted-foreground/40">•</span>
-                <span className="flex items-center gap-1">
-                  <MessageSquare className="w-3 h-3" />
-                  {selectedThread.post_count} replies
-                </span>
+                <span>•</span>
+                <span>{selectedThread.post_count} replies</span>
               </div>
             </div>
           </div>
-        </div>
+        </Card>
 
-        {/* Reply Input */}
         {!selectedThread.is_locked && (
-          <div className="border-b border-border/60 bg-muted/10 px-4 py-3">
-            <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                <User className="w-4 h-4 text-muted-foreground" />
-              </div>
-              <div className="flex-1">
-                <Textarea
-                  placeholder="Share your thoughts on this thread..."
-                  value={newReply}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewReply(e.target.value)}
-                  className="min-h-[80px] bg-background"
-                />
-                <div className="flex justify-end mt-2">
-                  <Button
-                    onClick={() => handleSubmitReply()}
-                    disabled={!newReply.trim() || isSubmitting}
-                    size="sm"
-                  >
-                    {isSubmitting ? (
-                      <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> Posting...</>
-                    ) : (
-                      <><Send className="w-4 h-4 mr-1" /> Post Reply</>
-                    )}
-                  </Button>
-                </div>
-              </div>
+          <Card className="p-4">
+            <div className="flex gap-2">
+              <Textarea
+                placeholder="Share your thoughts..."
+                value={newReply}
+                onChange={(e) => setNewReply(e.target.value)}
+                className="min-h-[80px]"
+              />
+              <Button
+                onClick={() => handleSubmitReply()}
+                disabled={!newReply.trim() || isSubmitting}
+              >
+                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+              </Button>
             </div>
-          </div>
+          </Card>
         )}
 
-        {/* Replies */}
-        <div className="px-4 py-2">
-          <div className="flex items-center justify-between py-3 border-b border-border/40">
-            <span className="text-sm font-medium flex items-center gap-2">
-              <MessageSquare className="w-4 h-4" />
-              {posts.length} {posts.length === 1 ? "Reply" : "Replies"}
-            </span>
+        <Card className="p-4">
+          <div className="flex items-center gap-2 mb-4">
+            <MessageSquare className="w-4 h-4 text-primary" />
+            <span className="font-medium">{posts.length} Replies</span>
           </div>
           
-          <div className="divide-y divide-border/30">
+          <div className="divide-y divide-border/50">
             {posts.map(post => renderPost(post))}
             {posts.length === 0 && (
-              <div className="text-center py-12">
-                <MessageSquare className="w-10 h-10 mx-auto mb-3 text-muted-foreground/30" />
-                <p className="text-muted-foreground text-sm">No replies yet</p>
-                <p className="text-muted-foreground/60 text-xs mt-1">Be the first to share your thoughts!</p>
-              </div>
+              <p className="text-center text-muted-foreground py-8">
+                No replies yet. Start the discussion!
+              </p>
             )}
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     )
   }
 
-  // Thread list view
+  // Feed view (list of threads)
   return (
-    <Card className="overflow-hidden">
-      {/* Header */}
-      <div className="border-b border-border/60 bg-muted/20 px-4 py-3">
-        <div className="flex items-center justify-between gap-3 flex-wrap">
-          <div className="flex items-center gap-2">
-            <MessageSquare className="w-5 h-5" />
-            <h2 className="font-semibold">Discussion</h2>
-            <Badge variant="secondary" className="text-xs font-mono">
-              {threads.length}
-            </Badge>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <MessageSquare className="w-5 h-5 text-primary" />
+          <h2 className="text-lg font-semibold">Discussion</h2>
+          <Badge variant="outline" className="ml-1">
+            {threads.length} threads
+          </Badge>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <div className="flex bg-secondary/50 rounded-lg p-1">
+            <Button
+              variant={sortMode === "hot" ? "default" : "ghost"}
+              size="sm"
+              className="h-7 px-3 text-xs"
+              onClick={() => setSortMode("hot")}
+            >
+              <Flame className="w-3 h-3 mr-1" />
+              Hot
+            </Button>
+            <Button
+              variant={sortMode === "new" ? "default" : "ghost"}
+              size="sm"
+              className="h-7 px-3 text-xs"
+              onClick={() => setSortMode("new")}
+            >
+              <Clock className="w-3 h-3 mr-1" />
+              New
+            </Button>
+            <Button
+              variant={sortMode === "top" ? "default" : "ghost"}
+              size="sm"
+              className="h-7 px-3 text-xs"
+              onClick={() => setSortMode("top")}
+            >
+              <TrendingUp className="w-3 h-3 mr-1" />
+              Top
+            </Button>
           </div>
           
-          <div className="flex items-center gap-2">
-            {/* Sort Controls */}
-            <div className="flex rounded-lg border border-border/60 bg-background p-0.5">
-              <Button
-                variant={sortMode === "hot" ? "secondary" : "ghost"}
-                size="sm"
-                className="h-7 px-2.5 text-xs rounded-md"
-                onClick={() => setSortMode("hot")}
-              >
-                <Flame className="w-3 h-3 mr-1" />
-                Hot
-              </Button>
-              <Button
-                variant={sortMode === "new" ? "secondary" : "ghost"}
-                size="sm"
-                className="h-7 px-2.5 text-xs rounded-md"
-                onClick={() => setSortMode("new")}
-              >
-                <Clock className="w-3 h-3 mr-1" />
-                New
-              </Button>
-              <Button
-                variant={sortMode === "top" ? "secondary" : "ghost"}
-                size="sm"
-                className="h-7 px-2.5 text-xs rounded-md"
-                onClick={() => setSortMode("top")}
-              >
-                <TrendingUp className="w-3 h-3 mr-1" />
-                Top
-              </Button>
-            </div>
-            
-            {/* New Thread Button */}
-            <Dialog open={newThreadOpen} onOpenChange={setNewThreadOpen}>
-              <DialogTrigger asChild>
-                <Button size="sm" className="h-7">
-                  <Plus className="w-4 h-4 mr-1" />
-                  New Thread
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <DialogHeader>
-                  <DialogTitle>Start a New Thread</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4 pt-2">
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Title</label>
-                    <Input
-                      placeholder="What's this thread about?"
-                      value={newThreadTitle}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewThreadTitle(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Description</label>
-                    <Textarea
-                      placeholder="Share findings, ask questions, or propose theories..."
-                      value={newThreadContent}
-                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewThreadContent(e.target.value)}
-                      className="min-h-[120px]"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
-                      Thumbnail URL <span className="text-muted-foreground/60">(optional)</span>
-                    </label>
-                    <Input
-                      placeholder="https://..."
-                      value={newThreadThumbnail}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewThreadThumbnail(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex justify-end gap-2 pt-2">
-                    <Button variant="ghost" onClick={() => setNewThreadOpen(false)}>
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={handleSubmitThread}
-                      disabled={!newThreadTitle.trim() || !newThreadContent.trim() || isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> Creating...</>
-                      ) : (
-                        <>Create Thread</>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
+          <Button
+            size="sm"
+            onClick={() => setShowNewThread(!showNewThread)}
+          >
+            + New Thread
+          </Button>
         </div>
       </div>
 
-      {/* Thread List */}
-      <div className="divide-y divide-border/40">
+      {showNewThread && (
+        <Card className="p-4 border-primary/30 bg-primary/5">
+          <h3 className="font-medium mb-3">Start a new thread</h3>
+          <Input
+            placeholder="Thread title..."
+            value={newThreadTitle}
+            onChange={(e) => setNewThreadTitle(e.target.value)}
+            className="mb-2"
+          />
+          <Textarea
+            placeholder="What do you want to discuss? Share findings, ask questions, or propose theories..."
+            value={newThreadContent}
+            onChange={(e) => setNewThreadContent(e.target.value)}
+            className="min-h-[100px] mb-2"
+          />
+          <div className="space-y-1 mb-3">
+            <Input
+              placeholder="Thumbnail URL (optional, recommended)"
+              value={newThreadThumbnail}
+              onChange={(e) => setNewThreadThumbnail(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">
+              Optional but recommended for visibility in the thread list.
+            </p>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="ghost" onClick={() => setShowNewThread(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSubmitThread}
+              disabled={!newThreadTitle.trim() || !newThreadContent.trim() || isSubmitting}
+            >
+              {isSubmitting ? (
+                <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> Posting...</>
+              ) : (
+                <>Post Thread</>
+              )}
+            </Button>
+          </div>
+        </Card>
+      )}
+
+      <div className="space-y-2">
         {threads.map((thread) => (
-          <div
+          <Card
             key={thread.id}
-            className={`px-4 py-3 hover:bg-muted/30 cursor-pointer transition-colors group ${
-              thread.is_pinned ? "bg-primary/5" : ""
-            }`}
+            className="p-3 hover:border-primary/30 transition-colors cursor-pointer"
             onClick={() => setSelectedThread(thread)}
           >
-            <div className="flex items-start gap-3">
-              {/* Thumbnail */}
-              <div className="relative h-14 w-14 shrink-0 rounded-lg border border-border/60 bg-muted/30 overflow-hidden flex items-center justify-center">
+            <div className="flex gap-3">
+              <div className="relative h-12 w-12 shrink-0 rounded-md border border-border bg-muted/30 overflow-hidden flex items-center justify-center">
                 {thread.thumbnail_url ? (
                   <img
                     src={thread.thumbnail_url}
-                    alt=""
-                    className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                    alt={`${thread.title} thumbnail`}
+                    className="h-full w-full object-cover grayscale"
                     loading="lazy"
                   />
                 ) : (
-                  <MessageSquare className="w-5 h-5 text-muted-foreground/50" />
+                  <MessageSquare className="w-4 h-4 text-muted-foreground" />
                 )}
+                <span className="absolute -bottom-1 -right-1 bg-background text-[10px] font-medium px-1 rounded border border-border">
+                  {thread.post_count}
+                </span>
               </div>
               
-              {/* Content */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5 mb-1">
-                  {thread.is_pinned && <Pin className="w-3 h-3 text-foreground" />}
+                <div className="flex items-center gap-2 mb-1">
+                  {thread.is_pinned && <Pin className="w-3 h-3 text-primary" />}
                   {thread.is_locked && <Lock className="w-3 h-3 text-muted-foreground" />}
-                  <h3 className="font-medium text-sm truncate group-hover:text-foreground transition-colors">
-                    {thread.title}
-                  </h3>
+                  <h3 className="font-medium text-sm line-clamp-1">{thread.title}</h3>
                 </div>
-                
                 {thread.description && (
-                  <p className="text-xs text-muted-foreground line-clamp-1 mb-1.5">{thread.description}</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2 mb-2">{thread.description}</p>
                 )}
                 
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Badge variant="outline" className="text-[10px] px-1.5 py-0 font-mono uppercase tracking-wide border-border/60">
-                    {thread.category}
-                  </Badge>
-                  <span className="flex items-center gap-1">
+                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0">{thread.category}</Badge>
+                  <span className={`flex items-center gap-1 ${thread.created_by_type === "agent" ? "text-primary" : ""}`}>
                     {getAuthorIcon(thread.created_by_type, thread.created_by)}
                     {thread.created_by}
                   </span>
                   {thread.created_by_type === "agent" && (
-                    <Badge variant="secondary" className="text-[10px] px-1 py-0">
-                      AI
+                    <Badge variant="outline" className="text-[10px] px-1 py-0 text-primary border-primary/30">
+                      AGENT
                     </Badge>
                   )}
-                  <span className="text-muted-foreground/40">•</span>
                   <span>{formatTimeAgo(thread.last_activity_at)}</span>
                 </div>
               </div>
-              
-              {/* Stats */}
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <div className="text-right">
-                  <div className="flex items-center gap-1 text-sm font-medium">
-                    <MessageSquare className="w-4 h-4" />
-                    {thread.post_count}
-                  </div>
-                  <div className="text-[10px] uppercase tracking-wide">replies</div>
-                </div>
-                <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
             </div>
-          </div>
+          </Card>
         ))}
         
         {threads.length === 0 && (
-          <div className="px-4 py-12 text-center">
-            <MessageSquare className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
-            <p className="text-muted-foreground font-medium">No threads yet</p>
-            <p className="text-sm text-muted-foreground/60 mt-1 mb-4">
-              Start a discussion about this investigation
+          <Card className="p-8 text-center">
+            <MessageSquare className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
+            <p className="text-muted-foreground">No threads yet.</p>
+            <p className="text-sm text-muted-foreground/70 mt-1">
+              Start a discussion about this investigation!
             </p>
-            <Button size="sm" onClick={() => setNewThreadOpen(true)}>
-              <Plus className="w-4 h-4 mr-1" />
-              Create First Thread
-            </Button>
-          </div>
+          </Card>
         )}
       </div>
-    </Card>
+    </div>
   )
 }
