@@ -21,6 +21,10 @@ import {
   Loader2
 } from "lucide-react"
 import { AgentChat } from "./agent-chat"
+import { TimelineView } from "./timeline-view"
+import { ConnectionGraph } from "./connection-graph"
+import { ThreadList } from "./thread-list"
+import { ThreadDetail } from "./thread-detail"
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
 
@@ -38,7 +42,24 @@ interface InvestigationDetailProps {
   investigation: Investigation
 }
 
+interface Thread {
+  id: string
+  investigation_id: string
+  title: string
+  description: string | null
+  category: string
+  created_by: string
+  created_by_type: string
+  is_pinned: boolean
+  is_locked: boolean
+  post_count: number
+  last_activity_at: string
+  created_at: string
+}
+
 export function InvestigationDetail({ investigation }: InvestigationDetailProps) {
+  const [selectedThread, setSelectedThread] = React.useState<Thread | null>(null)
+  
   const { data, isLoading } = useSWR(
     `/api/investigations/${investigation.id}`,
     fetcher,
@@ -154,6 +175,27 @@ export function InvestigationDetail({ investigation }: InvestigationDetailProps)
         </div>
       </Card>
       
+      {/* Forum Threads - Main content area */}
+      {selectedThread ? (
+        <ThreadDetail 
+          thread={selectedThread} 
+          onBack={() => setSelectedThread(null)} 
+        />
+      ) : (
+        <ThreadList 
+          investigationId={fullInvestigation.id}
+          investigationTitle={fullInvestigation.title}
+          onSelectThread={setSelectedThread}
+        />
+      )}
+      
+      {/* Visualization Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <TimelineView investigationId={fullInvestigation.id} />
+        <ConnectionGraph investigationId={fullInvestigation.id} />
+      </div>
+      
+      {/* Agent Chat */}
       <AgentChat investigationId={fullInvestigation.id} />
     </div>
   )

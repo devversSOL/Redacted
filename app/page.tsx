@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
+import { HeroSection } from "@/components/hero-section"
 import { InvestigationBoard } from "@/components/investigation-board"
 import { EvidenceFeed } from "@/components/evidence-feed"
 import { AgentPanel } from "@/components/agent-panel"
@@ -23,6 +24,7 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [selectedInvestigation, setSelectedInvestigation] = useState<Investigation | null>(null)
   const [viewMode, setViewMode] = useState<"board" | "feed">("board")
+  const [showHero, setShowHero] = useState(true)
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000)
@@ -32,6 +34,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground font-mono">
       <Header currentTime={currentTime} />
+      
+      {/* Hero Section - Immediate agent/human access point */}
+      {showHero && !selectedInvestigation && (
+        <HeroSection onGetStarted={() => setShowHero(false)} />
+      )}
       
       <main className="p-4 lg:p-6">
         {selectedInvestigation ? (

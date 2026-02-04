@@ -1,6 +1,7 @@
 import { generateText, tool } from "ai"
 import { z } from "zod"
 import { createClient } from "@/lib/supabase/server"
+import { validateEvidencePacket, createValidationLogEntry } from "@/lib/redaction-validator"
 
 const AGENT_MODELS = {
   claude: "anthropic/claude-sonnet-4",
@@ -88,13 +89,42 @@ Use the tools to record your findings.`,
               citation: z.string(),
             }),
             execute: async ({ claim, claimType, confidence, citation }) => {
+              // Map lowercase claimType to capitalized for validation
+              const claimTypeMap: Record<string, string> = {
+                observed: 'Observed',
+                corroborated: 'Corroborated',
+                unknown: 'Unknown',
+              }
+              
+              const citations = [{ text: citation, document_id: doc.id }]
+              
+              // Validate evidence against HARD RULES before insertion
+              const validationResult = validateEvidencePacket({
+                statement: claim,
+                claim_type: claimTypeMap[claimType] as 'Observed' | 'Corroborated' | 'Unknown',
+                citations: citations as any,
+              })
+
+              if (!validationResult.valid) {
+                await supabase.from("validation_log").insert(
+                  createValidationLogEntry('evidence_packet', 'bg-agent-rejected', validationResult, claim)
+                )
+                return { 
+                  recorded: false, 
+                  error: "Rejected by validation rules",
+                  violations: validationResult.violations.map(v => v.message)
+                }
+              }
+
               await supabase.from("evidence_packets").insert({
                 investigation_id: investigationId,
                 document_id: doc.id,
                 claim,
                 claim_type: claimType,
                 confidence,
-                citations: [{ text: citation, document_id: doc.id }],
+                citations,
+                validation_status: validationResult.status,
+                validation_notes: validationResult.warnings,
                 agent_id: agentId,
                 agent_model: model,
               })
@@ -102,7 +132,6 @@ Use the tools to record your findings.`,
             },
           }),
         },
-        maxSteps: 15,
       })
 
       // Log completion

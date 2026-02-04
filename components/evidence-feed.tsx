@@ -19,7 +19,12 @@ import {
   Bot,
   User,
   Cpu,
-  Loader2
+  Loader2,
+  ShieldCheck,
+  ShieldAlert,
+  ShieldX,
+  FileText,
+  Hash
 } from "lucide-react"
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
@@ -27,7 +32,11 @@ const fetcher = (url: string) => fetch(url).then(res => res.json())
 interface Citation {
   text: string
   document_id?: string
-  offset?: number
+  page?: number
+  start_offset?: number
+  end_offset?: number
+  canonical?: string
+  excerpt?: string
 }
 
 interface EvidencePacket {
@@ -38,6 +47,9 @@ interface EvidencePacket {
   confidence: number
   citations: Citation[]
   uncertainty_notes: string[]
+  validation_status?: 'pending' | 'valid' | 'flagged' | 'rejected'
+  validation_notes?: string[]
+  supporting_chunk_ids?: string[]
   agent_id: string | null
   agent_model: string | null
   votes: number
@@ -71,6 +83,23 @@ export function EvidenceFeed({ investigation }: EvidenceFeedProps) {
     observed: { icon: CheckCircle2, color: "text-primary", bg: "bg-primary/10" },
     corroborated: { icon: Link2, color: "text-chart-2", bg: "bg-chart-2/10" },
     unknown: { icon: HelpCircle, color: "text-chart-4", bg: "bg-chart-4/10" }
+  }
+
+  const validationStatusConfig: Record<string, { icon: typeof ShieldCheck; color: string; label: string }> = {
+    valid: { icon: ShieldCheck, color: "text-green-500", label: "VALIDATED" },
+    flagged: { icon: ShieldAlert, color: "text-yellow-500", label: "FLAGGED" },
+    rejected: { icon: ShieldX, color: "text-red-500", label: "REJECTED" },
+    pending: { icon: HelpCircle, color: "text-muted-foreground", label: "PENDING" }
+  }
+
+  const formatCitation = (citation: Citation): string => {
+    if (citation.canonical) return citation.canonical
+    if (citation.document_id && citation.page !== undefined) {
+      const start = citation.start_offset || 0
+      const end = citation.end_offset || start + 100
+      return `${citation.document_id.substring(0, 8)}.${citation.page}.${start}-${end}`
+    }
+    return citation.document_id?.substring(0, 8) || "N/A"
   }
 
   const getAgentIcon = (agentId: string | null) => {
@@ -210,6 +239,19 @@ export function EvidenceFeed({ investigation }: EvidenceFeedProps) {
                         <Icon className="w-3 h-3 mr-1" />
                         {packet.claim_type.toUpperCase()}
                       </Badge>
+                      {(() => {
+                        const vConfig = validationStatusConfig[packet.validation_status || 'pending']
+                        const VIcon = vConfig.icon
+                        return (
+                          <Badge 
+                            variant="outline" 
+                            className={`text-xs font-mono ${vConfig.color} border-current/30`}
+                          >
+                            <VIcon className="w-3 h-3 mr-1" />
+                            {vConfig.label}
+                          </Badge>
+                        )
+                      })()}
                       <span className="text-xs text-muted-foreground font-mono">
                         {packet.id.substring(0, 8).toUpperCase()}
                       </span>
@@ -230,12 +272,26 @@ export function EvidenceFeed({ investigation }: EvidenceFeedProps) {
                             className="flex items-start gap-2 p-2 bg-secondary/50 rounded border border-border/50"
                           >
                             <Quote className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                            <div className="text-xs">
-                              <span className="text-muted-foreground font-mono">
-                                [DOC:{citation.document_id?.substring(0, 8) || "N/A"}]
-                              </span>
+                            <div className="text-xs flex-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="text-primary font-mono font-semibold">
+                                  [{formatCitation(citation)}]
+                                </span>
+                                {citation.page && (
+                                  <span className="text-muted-foreground flex items-center gap-1">
+                                    <FileText className="w-3 h-3" />
+                                    Page {citation.page}
+                                  </span>
+                                )}
+                                {citation.start_offset !== undefined && citation.end_offset !== undefined && (
+                                  <span className="text-muted-foreground flex items-center gap-1">
+                                    <Hash className="w-3 h-3" />
+                                    {citation.start_offset}-{citation.end_offset}
+                                  </span>
+                                )}
+                              </div>
                               <p className="text-foreground/80 mt-1 italic">
-                                {'"'}{citation.text}{'"'}
+                                {'"'}{citation.excerpt || citation.text}{'"'}
                               </p>
                             </div>
                           </div>

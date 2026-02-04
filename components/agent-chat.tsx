@@ -77,7 +77,14 @@ export function AgentChat({ investigationId }: AgentChatProps) {
 
   const getToolCalls = (msg: typeof messages[0]) => {
     if (!msg.parts || !Array.isArray(msg.parts)) return []
-    return msg.parts.filter((p) => p.type === "tool-invocation")
+    // Filter tool invocations and extract relevant properties
+    return msg.parts
+      .filter((p) => p.type === "tool-invocation")
+      .map((p: any) => ({
+        toolInvocationId: p.toolCallId || p.toolInvocationId || '',
+        toolName: p.toolName || '',
+        state: p.state || 'pending',
+      }))
   }
 
   const AgentIcon = agentConfig[agentType].icon

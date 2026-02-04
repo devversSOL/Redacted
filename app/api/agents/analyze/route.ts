@@ -1,6 +1,7 @@
 import { streamText, tool, convertToModelMessages } from "ai"
 import { z } from "zod"
 import { createClient } from "@/lib/supabase/server"
+import { validateEvidencePacket, createValidationLogEntry } from "@/lib/redaction-validator"
 
 const AGENT_MODELS = {
   claude: "anthropic/claude-sonnet-4",
@@ -93,6 +94,35 @@ Respond with structured findings using the available tools.`,
           uncertaintyNotes: z.array(z.string()).describe("Any caveats or uncertainties"),
         }),
         execute: async ({ claim, claimType, confidence, citationText, citationOffset, uncertaintyNotes }) => {
+          // Validate evidence against HARD RULES before insertion
+          const citations = [{ text: citationText, offset: citationOffset, document_id: documentId }]
+          
+          // Map lowercase claimType to capitalized for validation
+          const claimTypeMap: Record<string, string> = {
+            observed: 'Observed',
+            corroborated: 'Corroborated', 
+            unknown: 'Unknown',
+          }
+          
+          const validationResult = validateEvidencePacket({
+            statement: claim,
+            claim_type: claimTypeMap[claimType] as 'Observed' | 'Corroborated' | 'Unknown',
+            citations: citations as any, // Partial citations - validation only checks document_id
+            uncertainty_notes: uncertaintyNotes,
+          })
+
+          if (!validationResult.valid) {
+            // Log rejection and return error to agent
+            await supabase.from("validation_log").insert(
+              createValidationLogEntry('evidence_packet', 'agent-rejected', validationResult, claim)
+            )
+            return { 
+              success: false, 
+              error: "Evidence rejected by validation rules",
+              violations: validationResult.violations.map(v => v.message)
+            }
+          }
+
           const { data, error } = await supabase
             .from("evidence_packets")
             .insert({
@@ -101,13 +131,21 @@ Respond with structured findings using the available tools.`,
               claim,
               claim_type: claimType,
               confidence,
-              citations: [{ text: citationText, offset: citationOffset, document_id: documentId }],
+              citations,
               uncertainty_notes: uncertaintyNotes,
+              validation_status: validationResult.status,
+              validation_notes: validationResult.warnings, // warnings is already string[]
               agent_id: agentId,
               agent_model: model,
             })
             .select()
             .single()
+
+          if (!error) {
+            await supabase.from("validation_log").insert(
+              createValidationLogEntry('evidence_packet', data.id, validationResult, claim)
+            )
+          }
           
           return { success: !error, evidence: data }
         },
@@ -135,7 +173,6 @@ Respond with structured findings using the available tools.`,
         },
       }),
     },
-    maxSteps: 20,
     onFinish: async ({ text, toolCalls }) => {
       // Log completion
       await supabase.from("agent_activity").insert({
