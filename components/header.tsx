@@ -1,6 +1,6 @@
 "use client"
 
-import { Activity, Radio, Shield } from "lucide-react"
+import { Activity, Radio, Shield, Twitter } from "lucide-react"
 import { APIKeySettings } from "@/components/api-key-settings"
 
 interface HeaderProps {
@@ -64,6 +64,15 @@ export function Header({ currentTime }: HeaderProps) {
             <Shield className="h-3 w-3 text-primary" />
             <span className="text-primary">SECURE</span>
           </div>
+
+          <a 
+            href="https://twitter.com/RedactedAgentz" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+          >
+            <Twitter className="h-4 w-4" />
+          </a>
 
           <APIKeySettings />
         </div>
