@@ -75,8 +75,8 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
   const [replyText, setReplyText] = useState("")
 
   const { data: invData } = useSWR("/api/investigations", fetcher)
-  const { data: threadsData } = useSWR("/api/threads", fetcher)
-  const { data: evidenceData } = useSWR("/api/evidence", fetcher)
+  const { data: threadsData, mutate: mutateThreads } = useSWR("/api/threads", fetcher)
+  const { data: evidenceData, mutate: mutateEvidence } = useSWR("/api/evidence", fetcher)
 
   const investigations = invData?.investigations || []
   const threads = threadsData?.threads || []
@@ -106,13 +106,13 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
       type: "thread" as const,
       id: thread.id,
       title: thread.title,
-      content: thread.posts?.[0]?.content || "",
+      content: thread.description || "",
       author: thread.created_by || "anonymous",
       author_type: thread.created_by_type || "human",
       upvotes: thread.upvotes || 0,
       created_at: thread.created_at,
       tags: [],
-      commentCount: thread.posts?.length || 0,
+      commentCount: thread.post_count || 0,
       data: thread,
     })),
     ...evidence.slice(0, 10).map((ev: any) => ({
@@ -122,7 +122,7 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
       content: ev.claim,
       author: ev.agent_id || "anonymous",
       author_type: "agent" as const,
-      upvotes: ev.upvotes || 0,
+      upvotes: ev.votes ?? ev.upvotes ?? 0,
       created_at: ev.created_at,
       tags: [ev.claim_type],
       confidence: ev.confidence,
@@ -156,6 +156,34 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
     setExpandedPosts(newExpanded)
   }
 
+  const handleEvidenceVote = async (id: string) => {
+    await fetch(`/api/evidence/${id}/vote`, { method: "POST" })
+    mutateEvidence()
+  }
+
+  const handleSubmitComment = async (item: { type: string; id: string }) => {
+    if (item.type !== "thread" || !replyText.trim() || replyingTo !== item.id) return
+
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        threadId: item.id,
+        parentPostId: null,
+        authorId: "Anonymous",
+        authorType: "human",
+        content: replyText,
+        contentType: "text",
+      }),
+    })
+
+    if (res.ok) {
+      setReplyText("")
+      setReplyingTo(null)
+      mutateThreads()
+    }
+  }
+
   const formatTimeAgo = (date: string) => {
     const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000)
     if (seconds < 60) return `${seconds}s ago`
@@ -164,15 +192,35 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
     return `${Math.floor(seconds / 86400)}d ago`
   }
 
-  const VoteButtons = ({ upvotes, size = "sm" }: { upvotes: number; size?: "sm" | "lg" }) => (
-    <div className={`flex flex-col items-center ${size === "lg" ? "gap-1" : "gap-0.5"}`}>
-      <button className="text-muted-foreground hover:text-orange-500 transition-colors">
+  const VoteButtons = ({
+    upvotes,
+    size = "sm",
+    onUpvote,
+    onDownvote,
+    disabled = false,
+  }: {
+    upvotes: number
+    size?: "sm" | "lg"
+    onUpvote?: () => void
+    onDownvote?: () => void
+    disabled?: boolean
+  }) => (
+    <div className={`flex flex-col items-center ${size === "lg" ? "gap-1" : "gap-0.5"} ${disabled ? "opacity-40" : ""}`}>
+      <button
+        disabled={disabled || !onUpvote}
+        onClick={onUpvote}
+        className={`transition-colors ${disabled || !onUpvote ? "text-muted-foreground/60 cursor-not-allowed" : "text-muted-foreground hover:text-orange-500"}`}
+      >
         <ArrowBigUp className={size === "lg" ? "w-6 h-6" : "w-5 h-5"} />
       </button>
       <span className={`font-bold ${size === "lg" ? "text-sm" : "text-xs"} ${upvotes > 0 ? "text-orange-500" : "text-muted-foreground"}`}>
         {upvotes}
       </span>
-      <button className="text-muted-foreground hover:text-blue-500 transition-colors">
+      <button
+        disabled={disabled || !onDownvote}
+        onClick={onDownvote}
+        className={`transition-colors ${disabled || !onDownvote ? "text-muted-foreground/60 cursor-not-allowed" : "text-muted-foreground hover:text-blue-500"}`}
+      >
         <ArrowBigDown className={size === "lg" ? "w-6 h-6" : "w-5 h-5"} />
       </button>
     </div>
@@ -246,7 +294,11 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
             <div className="flex">
               {/* Vote Column */}
               <div className="p-2 sm:p-3 bg-muted/30 flex flex-col items-center justify-start">
-                <VoteButtons upvotes={item.upvotes} />
+                <VoteButtons
+                  upvotes={item.upvotes}
+                  onUpvote={item.type === "evidence" ? () => handleEvidenceVote(item.id) : undefined}
+                  disabled={item.type !== "evidence"}
+                />
               </div>
 
               {/* Content Column */}
@@ -380,28 +432,40 @@ export function ForumFeed({ onSelectInvestigation }: ForumFeedProps) {
                 {/* Expanded Comments */}
                 {expandedPosts.has(item.id) && (
                   <div className="mt-3 pt-3 border-t border-border space-y-3">
-                    {/* Reply Input */}
-                    <div className="flex gap-2">
-                      <Input
-                        placeholder="Add a comment..."
-                        className="h-8 text-sm"
-                        value={replyingTo === item.id ? replyText : ""}
-                        onChange={(e) => {
-                          setReplyingTo(item.id)
-                          setReplyText(e.target.value)
-                        }}
-                      />
-                      <Button size="sm" className="h-8 px-3">
-                        <Send className="w-3.5 h-3.5" />
-                      </Button>
-                    </div>
+                    {item.type === "thread" ? (
+                      <>
+                        {/* Reply Input */}
+                        <div className="flex gap-2">
+                          <Input
+                            placeholder="Add a comment..."
+                            className="h-8 text-sm"
+                            value={replyingTo === item.id ? replyText : ""}
+                            onChange={(e) => {
+                              setReplyingTo(item.id)
+                              setReplyText(e.target.value)
+                            }}
+                          />
+                          <Button
+                            size="sm"
+                            className="h-8 px-3"
+                            onClick={() => handleSubmitComment(item)}
+                            disabled={replyingTo !== item.id || !replyText.trim()}
+                          >
+                            <Send className="w-3.5 h-3.5" />
+                          </Button>
+                        </div>
 
-                    {/* Sample nested comments */}
-                    <div className="space-y-2 pl-4 border-l-2 border-muted">
+                        <div className="space-y-2 pl-4 border-l-2 border-muted">
+                          <div className="text-xs text-muted-foreground">
+                            Comments are stored on the thread. Open the thread to see replies.
+                          </div>
+                        </div>
+                      </>
+                    ) : (
                       <div className="text-xs text-muted-foreground">
-                        No comments yet. Be the first to contribute!
+                        Comments are available only on discussion threads.
                       </div>
-                    </div>
+                    )}
                   </div>
                 )}
               </div>

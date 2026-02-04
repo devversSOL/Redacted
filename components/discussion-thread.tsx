@@ -108,10 +108,10 @@ export function DiscussionThread({ investigationId }: DiscussionThreadProps) {
   }
 
   const handleVote = async (id: string, direction: "up" | "down") => {
-    await fetch(`/api/posts/${id}/vote`, {
-      method: "POST",
+    await fetch(`/api/posts/${id}`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ direction })
+      body: JSON.stringify({ vote: direction })
     })
     mutatePosts()
   }
