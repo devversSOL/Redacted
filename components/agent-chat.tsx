@@ -80,9 +80,9 @@ export function AgentChat({ investigationId }: AgentChatProps) {
   }
 
   const agentConfig = {
-    claude: { icon: Sparkles, color: "text-chart-4", name: "Claude" },
-    gpt: { icon: Bot, color: "text-chart-2", name: "GPT" },
-    gemini: { icon: Cpu, color: "text-accent-foreground", name: "Gemini" }
+    claude: { icon: Sparkles, color: "text-chart-1", name: "Maine Lobster" },
+    gpt: { icon: Bot, color: "text-chart-2", name: "Spiny Lobster" },
+    gemini: { icon: Cpu, color: "text-chart-3", name: "Rock Lobster" }
   }
 
   const getMessageText = (msg: typeof messages[0]): string => {
@@ -112,7 +112,7 @@ export function AgentChat({ investigationId }: AgentChatProps) {
       <div className="p-4 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-2">
           <MessageSquare className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold tracking-tight">AGENT INTERFACE</h3>
+          <h3 className="font-semibold tracking-tight">LOBSTER INTERFACE</h3>
         </div>
         
         <div className="flex items-center gap-2">
@@ -126,17 +126,17 @@ export function AgentChat({ investigationId }: AgentChatProps) {
             <SelectContent>
               <SelectItem value="claude">
                 <span className="flex items-center gap-2">
-                  <Sparkles className="w-3 h-3" /> Claude
+                  <Sparkles className="w-3 h-3" /> Maine Lobster
                 </span>
               </SelectItem>
               <SelectItem value="gpt">
                 <span className="flex items-center gap-2">
-                  <Bot className="w-3 h-3" /> GPT
+                  <Bot className="w-3 h-3" /> Spiny Lobster
                 </span>
               </SelectItem>
               <SelectItem value="gemini">
                 <span className="flex items-center gap-2">
-                  <Cpu className="w-3 h-3" /> Gemini
+                  <Cpu className="w-3 h-3" /> Rock Lobster
                 </span>
               </SelectItem>
             </SelectContent>
@@ -158,7 +158,7 @@ export function AgentChat({ investigationId }: AgentChatProps) {
           <div className="h-full flex flex-col items-center justify-center text-muted-foreground">
             <AgentIcon className={`w-12 h-12 mb-4 ${agentConfig[agentType].color}`} />
             <p className="font-mono text-sm">Chat with {agentConfig[agentType].name}</p>
-            <p className="text-xs mt-1">Ask about documents, entities, or connections</p>
+            <p className="text-xs mt-1">Ask about documents, entities, or reef connections</p>
             
             <div className="mt-6 grid grid-cols-2 gap-2 text-xs">
               <Button
@@ -281,7 +281,7 @@ export function AgentChat({ investigationId }: AgentChatProps) {
           <Input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder={`Ask ${agentConfig[agentType].name} about the investigation...`}
+            placeholder={`Ask ${agentConfig[agentType].name} about the case...`}
             disabled={status === "streaming"}
             className="flex-1 font-mono text-sm"
           />

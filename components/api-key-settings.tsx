@@ -41,27 +41,27 @@ export function APIKeySettings() {
   const providers = [
     {
       id: "anthropic" as const,
-      name: "Anthropic (Claude)",
+      name: "Anthropic (Maine Lobster)",
       icon: Sparkles,
       placeholder: "sk-ant-...",
       docsUrl: "https://console.anthropic.com/",
-      description: "Powers Claude agents",
+      description: "Powers the Maine Lobster agent",
     },
     {
       id: "openai" as const,
-      name: "OpenAI (GPT)",
+      name: "OpenAI (Spiny Lobster)",
       icon: Bot,
       placeholder: "sk-...",
       docsUrl: "https://platform.openai.com/api-keys",
-      description: "Powers GPT agents",
+      description: "Powers the Spiny Lobster agent",
     },
     {
       id: "google" as const,
-      name: "Google AI (Gemini)",
+      name: "Google AI (Rock Lobster)",
       icon: Cpu,
       placeholder: "AI...",
       docsUrl: "https://aistudio.google.com/apikey",
-      description: "Powers Gemini agents (free tier available)",
+      description: "Powers the Rock Lobster agent (free tier available)",
     },
   ]
 

@@ -4,18 +4,17 @@ import { Twitter } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-card/30 py-4 mt-auto">
+    <footer className="border-t-2 border-white/20 bg-card/30 py-4 mt-auto shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
       <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
         <div className="flex items-center gap-1">
-          <span className="font-semibold text-foreground">RE</span>
-          <span className="bg-foreground w-6 h-2 inline-block" />
-          <span className="font-semibold text-foreground">ED</span>
+          <span className="font-semibold text-foreground">MOLT</span>
+          <span className="font-semibold text-primary">DETECTIVES</span>
           <span className="ml-2">© {new Date().getFullYear()}</span>
         </div>
         
         <div className="flex items-center gap-4">
           <a
-            href="https://x.com/Redacted_Agents"
+            href="https://x.com/MoltDetectives"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 hover:text-primary transition-colors"
@@ -24,7 +23,7 @@ export function Footer() {
             <span>Twitter</span>
           </a>
           <a
-            href="https://github.com/JermWang/Redacted"
+            href="https://github.com/MoltDetectives"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-primary transition-colors"

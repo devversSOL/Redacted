@@ -4,74 +4,76 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.98 0 0);
-  --foreground: oklch(0.15 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0 0);
-  --primary: oklch(0.20 0 0);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.95 0 0);
-  --secondary-foreground: oklch(0.20 0 0);
-  --muted: oklch(0.96 0 0);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.92 0 0);
-  --accent-foreground: oklch(0.20 0 0);
-  --destructive: oklch(0.35 0 0);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.85 0 0);
-  --input: oklch(0.92 0 0);
-  --ring: oklch(0.20 0 0);
-  --chart-1: oklch(0.20 0 0);
-  --chart-2: oklch(0.35 0 0);
-  --chart-3: oklch(0.50 0 0);
-  --chart-4: oklch(0.65 0 0);
-  --chart-5: oklch(0.80 0 0);
+  /* MoltDetectives - Royal Blue Theme (Light) */
+  --background: oklch(0.35 0.18 265);
+  --foreground: oklch(0.98 0.01 0);
+  --card: oklch(0.40 0.16 265);
+  --card-foreground: oklch(0.98 0.01 0);
+  --popover: oklch(0.38 0.17 265);
+  --popover-foreground: oklch(0.98 0.01 0);
+  --primary: oklch(0.65 0.20 25);
+  --primary-foreground: oklch(0.98 0.01 0);
+  --secondary: oklch(0.45 0.14 265);
+  --secondary-foreground: oklch(0.98 0.01 0);
+  --muted: oklch(0.42 0.12 265);
+  --muted-foreground: oklch(0.85 0.02 0);
+  --accent: oklch(0.50 0.15 265);
+  --accent-foreground: oklch(0.98 0.01 0);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0.01 0);
+  --border: oklch(0.50 0.12 265);
+  --input: oklch(0.45 0.14 265);
+  --ring: oklch(0.65 0.20 25);
+  --chart-1: oklch(0.65 0.20 25);
+  --chart-2: oklch(0.70 0.14 180);
+  --chart-3: oklch(0.75 0.12 60);
+  --chart-4: oklch(0.80 0.10 280);
+  --chart-5: oklch(0.85 0.08 140);
   --radius: 0.5rem;
-  --sidebar: oklch(0.97 0 0);
-  --sidebar-foreground: oklch(0.15 0 0);
-  --sidebar-primary: oklch(0.20 0 0);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.94 0 0);
-  --sidebar-accent-foreground: oklch(0.20 0 0);
-  --sidebar-border: oklch(0.85 0 0);
-  --sidebar-ring: oklch(0.20 0 0);
+  --sidebar: oklch(0.32 0.18 265);
+  --sidebar-foreground: oklch(0.98 0.01 0);
+  --sidebar-primary: oklch(0.65 0.20 25);
+  --sidebar-primary-foreground: oklch(0.98 0.01 0);
+  --sidebar-accent: oklch(0.45 0.14 265);
+  --sidebar-accent-foreground: oklch(0.98 0.01 0);
+  --sidebar-border: oklch(0.48 0.12 265);
+  --sidebar-ring: oklch(0.65 0.20 25);
 }
 
 .dark {
-  --background: oklch(0.08 0 0);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.12 0 0);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.10 0 0);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.90 0 0);
-  --primary-foreground: oklch(0.08 0 0);
-  --secondary: oklch(0.18 0 0);
-  --secondary-foreground: oklch(0.90 0 0);
-  --muted: oklch(0.16 0 0);
-  --muted-foreground: oklch(0.60 0 0);
-  --accent: oklch(0.20 0 0);
-  --accent-foreground: oklch(0.90 0 0);
-  --destructive: oklch(0.70 0 0);
-  --destructive-foreground: oklch(0.08 0 0);
-  --border: oklch(0.25 0 0);
-  --input: oklch(0.16 0 0);
-  --ring: oklch(0.90 0 0);
-  --chart-1: oklch(0.90 0 0);
-  --chart-2: oklch(0.75 0 0);
-  --chart-3: oklch(0.60 0 0);
-  --chart-4: oklch(0.45 0 0);
-  --chart-5: oklch(0.30 0 0);
-  --sidebar: oklch(0.10 0 0);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.90 0 0);
-  --sidebar-primary-foreground: oklch(0.08 0 0);
-  --sidebar-accent: oklch(0.16 0 0);
-  --sidebar-accent-foreground: oklch(0.90 0 0);
-  --sidebar-border: oklch(0.25 0 0);
-  --sidebar-ring: oklch(0.90 0 0);
+  /* MoltDetectives - Royal Blue Theme (Dark) */
+  --background: oklch(0.25 0.16 265);
+  --foreground: oklch(0.98 0.01 0);
+  --card: oklch(0.30 0.14 265);
+  --card-foreground: oklch(0.98 0.01 0);
+  --popover: oklch(0.28 0.15 265);
+  --popover-foreground: oklch(0.98 0.01 0);
+  --primary: oklch(0.65 0.20 25);
+  --primary-foreground: oklch(0.98 0.01 0);
+  --secondary: oklch(0.35 0.12 265);
+  --secondary-foreground: oklch(0.98 0.01 0);
+  --muted: oklch(0.32 0.10 265);
+  --muted-foreground: oklch(0.80 0.02 0);
+  --accent: oklch(0.40 0.14 265);
+  --accent-foreground: oklch(0.98 0.01 0);
+  --destructive: oklch(0.60 0.22 25);
+  --destructive-foreground: oklch(0.98 0.01 0);
+  --border: oklch(0.40 0.10 265);
+  --input: oklch(0.35 0.12 265);
+  --ring: oklch(0.65 0.20 25);
+  --chart-1: oklch(0.65 0.20 25);
+  --chart-2: oklch(0.70 0.14 180);
+  --chart-3: oklch(0.75 0.12 60);
+  --chart-4: oklch(0.80 0.10 280);
+  --chart-5: oklch(0.85 0.08 140);
+  --sidebar: oklch(0.22 0.16 265);
+  --sidebar-foreground: oklch(0.98 0.01 0);
+  --sidebar-primary: oklch(0.65 0.20 25);
+  --sidebar-primary-foreground: oklch(0.98 0.01 0);
+  --sidebar-accent: oklch(0.35 0.12 265);
+  --sidebar-accent-foreground: oklch(0.98 0.01 0);
+  --sidebar-border: oklch(0.38 0.10 265);
+  --sidebar-ring: oklch(0.65 0.20 25);
 }
 
 @theme inline {
@@ -124,28 +126,60 @@
   }
 }
 
-/* Holographic username styling for agents - simple shimmer */
+/* Emphasized UI Style - Shadows & Borders */
+@layer components {
+  /* Card-like elevated surfaces */
+  .elevated {
+    @apply border-2 border-white/20 shadow-[0_4px_20px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)_inset];
+  }
+  
+  .elevated-hover {
+    @apply transition-all duration-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.15)_inset] hover:border-white/30;
+  }
+  
+  /* Inset/pressed effect */
+  .inset {
+    @apply border-2 border-black/20 shadow-[inset_0_2px_8px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.1)];
+  }
+  
+  /* Glass-like panels */
+  .glass-panel {
+    @apply border-2 border-white/25 bg-white/5 backdrop-blur-sm shadow-[0_8px_32px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.1)_inset];
+  }
+  
+  /* Emphasized button style */
+  .btn-emphasized {
+    @apply border-2 border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.3),0_1px_0_rgba(255,255,255,0.2)_inset] hover:shadow-[0_6px_20px_rgba(0,0,0,0.4),0_1px_0_rgba(255,255,255,0.25)_inset] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)] transition-all;
+  }
+  
+  /* Emphasized input fields */
+  .input-emphasized {
+    @apply border-2 border-white/20 shadow-[inset_0_2px_6px_rgba(0,0,0,0.15),0_1px_0_rgba(255,255,255,0.1)] focus:border-white/40 focus:shadow-[inset_0_2px_6px_rgba(0,0,0,0.15),0_0_0_3px_rgba(255,255,255,0.1)];
+  }
+}
+
+/* Lobster shell shimmer effect for agent usernames */
 .holographic-text {
-  color: #a5b4fc;
+  color: #ff9966;
   font-weight: 600;
-  animation: holographic-pulse 3s ease-in-out infinite;
+  animation: shell-pulse 3s ease-in-out infinite;
 }
 
-@keyframes holographic-pulse {
-  0%, 100% { color: #a5b4fc; }
-  50% { color: #c4b5fd; }
+@keyframes shell-pulse {
+  0%, 100% { color: #ff9966; }
+  50% { color: #ffcc99; }
 }
 
-/* Holographic badge for agent tags - subtle chrome effect */
+/* Shell-like badge for lobster agent tags */
 .holographic-badge {
   position: relative;
   background: linear-gradient(
     135deg,
-    rgba(168, 181, 196, 0.15) 0%,
-    rgba(232, 240, 248, 0.2) 50%,
-    rgba(142, 197, 252, 0.15) 100%
+    rgba(255, 153, 102, 0.2) 0%,
+    rgba(255, 204, 153, 0.25) 50%,
+    rgba(255, 120, 80, 0.2) 100%
   );
-  border: 1px solid rgba(168, 181, 196, 0.3);
+  border: 1px solid rgba(255, 180, 140, 0.4);
   overflow: hidden;
 }
 
@@ -156,26 +190,26 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.3),
     transparent
   );
-  animation: holographic-shine 4s ease-in-out infinite;
+  animation: shell-shine 4s ease-in-out infinite;
 }
 
-@keyframes holographic-shine {
+@keyframes shell-shine {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
 
-/* Subtle glow effect for agent cards */
+/* Ocean glow effect for lobster agent cards */
 .agent-glow {
   box-shadow: 
-    0 0 8px rgba(142, 197, 252, 0.2),
-    0 0 16px rgba(168, 181, 196, 0.1);
+    0 0 8px rgba(255, 153, 102, 0.3),
+    0 0 16px rgba(100, 140, 255, 0.2);
 }
 
 .agent-glow:hover {
   box-shadow: 
-    0 0 12px rgba(142, 197, 252, 0.3),
-    0 0 24px rgba(168, 181, 196, 0.15);
+    0 0 12px rgba(255, 153, 102, 0.4),
+    0 0 24px rgba(100, 140, 255, 0.3);
 }

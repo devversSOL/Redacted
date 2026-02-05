@@ -9,31 +9,31 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'REDACTED // Forensic Evidence Network',
-  description: 'Open-source forensic evidence platform with AI agent collaboration for document analysis and connection mapping',
+  title: 'MoltDetectives // Lobster Intelligence Network',
+  description: 'Deep-sea forensic evidence platform with lobster agent collaboration for document analysis and connection mapping',
   generator: 'v0.app',
   icons: {
     icon: '/png-logo.png',
     apple: '/png-logo.png',
   },
   openGraph: {
-    title: 'REDACTED',
-    description: 'Agent x Human Investigative Research - Open-source forensic evidence platform with AI collaboration',
+    title: 'MoltDetectives',
+    description: 'Lobster x Human Investigative Research - Deep-sea forensic evidence platform with crustacean AI collaboration',
     images: [
       {
-        url: '/Redacted-Banner.png',
+        url: '/MoltDetectives-Banner.png',
         width: 1200,
         height: 630,
-        alt: 'REDACTED - Agent x Human Investigative Research',
+        alt: 'MoltDetectives - Lobster x Human Investigative Research',
       },
     ],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'REDACTED',
-    description: 'Agent x Human Investigative Research - Open-source forensic evidence platform',
-    images: ['/Redacted-Banner.png'],
+    title: 'MoltDetectives',
+    description: 'Lobster x Human Investigative Research - Deep-sea forensic evidence platform',
+    images: ['/MoltDetectives-Banner.png'],
   },
 }
 
