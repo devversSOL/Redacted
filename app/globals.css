@@ -3,75 +3,96 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Habbo Hotel Color Palette */
 :root {
-  --background: oklch(0.98 0 0);
-  --foreground: oklch(0.15 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0 0);
-  --primary: oklch(0.20 0 0);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.95 0 0);
-  --secondary-foreground: oklch(0.20 0 0);
-  --muted: oklch(0.96 0 0);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.92 0 0);
-  --accent-foreground: oklch(0.20 0 0);
-  --destructive: oklch(0.35 0 0);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.85 0 0);
-  --input: oklch(0.92 0 0);
-  --ring: oklch(0.20 0 0);
-  --chart-1: oklch(0.20 0 0);
-  --chart-2: oklch(0.35 0 0);
-  --chart-3: oklch(0.50 0 0);
-  --chart-4: oklch(0.65 0 0);
-  --chart-5: oklch(0.80 0 0);
-  --radius: 0.5rem;
-  --sidebar: oklch(0.97 0 0);
-  --sidebar-foreground: oklch(0.15 0 0);
-  --sidebar-primary: oklch(0.20 0 0);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.94 0 0);
-  --sidebar-accent-foreground: oklch(0.20 0 0);
-  --sidebar-border: oklch(0.85 0 0);
-  --sidebar-ring: oklch(0.20 0 0);
+  /* Core backgrounds */
+  --background: #9bbad3;
+  --foreground: #0b2a3a;
+  
+  /* Card/Window backgrounds */
+  --card: #d9e6ef;
+  --card-foreground: #0b2a3a;
+  --popover: #eef6fb;
+  --popover-foreground: #0b2a3a;
+  
+  /* Primary: Yellow/Gold accent */
+  --primary: #ffcc00;
+  --primary-foreground: #1f1300;
+  
+  /* Secondary: Blue */
+  --secondary: #b6d5e9;
+  --secondary-foreground: #0b2a3a;
+  
+  /* Muted */
+  --muted: #c6d9e6;
+  --muted-foreground: #3b5f76;
+  
+  /* Accent: Orange */
+  --accent: #f59e0b;
+  --accent-foreground: #1f1300;
+  
+  /* Destructive: Red */
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  
+  /* UI elements */
+  --border: #000000;
+  --input: #ffffff;
+  --ring: #3b5f76;
+  
+  /* Charts */
+  --chart-1: #ffcc00;
+  --chart-2: #22c55e;
+  --chart-3: #6fa6c3;
+  --chart-4: #f59e0b;
+  --chart-5: #dc2626;
+  
+  --radius: 0.625rem;
+  
+  /* Sidebar */
+  --sidebar: #2f2f2f;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ffcc00;
+  --sidebar-primary-foreground: #1f1300;
+  --sidebar-accent: #3b5f76;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #000000;
+  --sidebar-ring: #ffcc00;
 }
 
 .dark {
-  --background: oklch(0.08 0 0);
-  --foreground: oklch(0.95 0 0);
-  --card: oklch(0.12 0 0);
-  --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.10 0 0);
-  --popover-foreground: oklch(0.95 0 0);
-  --primary: oklch(0.90 0 0);
-  --primary-foreground: oklch(0.08 0 0);
-  --secondary: oklch(0.18 0 0);
-  --secondary-foreground: oklch(0.90 0 0);
-  --muted: oklch(0.16 0 0);
-  --muted-foreground: oklch(0.60 0 0);
-  --accent: oklch(0.20 0 0);
-  --accent-foreground: oklch(0.90 0 0);
-  --destructive: oklch(0.70 0 0);
-  --destructive-foreground: oklch(0.08 0 0);
-  --border: oklch(0.25 0 0);
-  --input: oklch(0.16 0 0);
-  --ring: oklch(0.90 0 0);
-  --chart-1: oklch(0.90 0 0);
-  --chart-2: oklch(0.75 0 0);
-  --chart-3: oklch(0.60 0 0);
-  --chart-4: oklch(0.45 0 0);
-  --chart-5: oklch(0.30 0 0);
-  --sidebar: oklch(0.10 0 0);
-  --sidebar-foreground: oklch(0.95 0 0);
-  --sidebar-primary: oklch(0.90 0 0);
-  --sidebar-primary-foreground: oklch(0.08 0 0);
-  --sidebar-accent: oklch(0.16 0 0);
-  --sidebar-accent-foreground: oklch(0.90 0 0);
-  --sidebar-border: oklch(0.25 0 0);
-  --sidebar-ring: oklch(0.90 0 0);
+  --background: #2f2f2f;
+  --foreground: #eef6fb;
+  --card: #3b5f76;
+  --card-foreground: #eef6fb;
+  --popover: #0b2a3a;
+  --popover-foreground: #eef6fb;
+  --primary: #ffcc00;
+  --primary-foreground: #1f1300;
+  --secondary: #6fa6c3;
+  --secondary-foreground: #0b2a3a;
+  --muted: #3b5f76;
+  --muted-foreground: #b6d5e9;
+  --accent: #f59e0b;
+  --accent-foreground: #1f1300;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #000000;
+  --input: #0b2a3a;
+  --ring: #ffcc00;
+  --chart-1: #ffcc00;
+  --chart-2: #22c55e;
+  --chart-3: #b6d5e9;
+  --chart-4: #f59e0b;
+  --chart-5: #dc2626;
+  --sidebar: #0b2a3a;
+  --sidebar-foreground: #eef6fb;
+  --sidebar-primary: #ffcc00;
+  --sidebar-primary-foreground: #1f1300;
+  --sidebar-accent: #6fa6c3;
+  --sidebar-accent-foreground: #0b2a3a;
+  --sidebar-border: #000000;
+  --sidebar-ring: #ffcc00;
 }
 
 @theme inline {
@@ -124,28 +145,63 @@
   }
 }
 
-/* Holographic username styling for agents - simple shimmer */
+/* Habbo-style pixel shadow utility */
+.habbo-shadow {
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25), inset 0 0 0 2px #3b5f76;
+}
+
+.habbo-shadow-sm {
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Habbo window inner glow */
+.habbo-inner-glow {
+  box-shadow: inset 0 0 0 2px #6fa6c3;
+}
+
+/* Retro pixel scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #b6d5e9;
+  border: 2px solid #000000;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #ffcc00, #f3b700);
+  border: 2px solid #000000;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #ffe066, #ffcc00);
+}
+
+/* Holographic effects for agents */
 .holographic-text {
-  color: #a5b4fc;
+  color: #ffcc00;
   font-weight: 600;
   animation: holographic-pulse 3s ease-in-out infinite;
 }
 
 @keyframes holographic-pulse {
-  0%, 100% { color: #a5b4fc; }
-  50% { color: #c4b5fd; }
+  0%, 100% { color: #ffcc00; }
+  50% { color: #f59e0b; }
 }
 
-/* Holographic badge for agent tags - subtle chrome effect */
 .holographic-badge {
   position: relative;
   background: linear-gradient(
     135deg,
-    rgba(168, 181, 196, 0.15) 0%,
-    rgba(232, 240, 248, 0.2) 50%,
-    rgba(142, 197, 252, 0.15) 100%
+    rgba(255, 204, 0, 0.2) 0%,
+    rgba(245, 158, 11, 0.3) 50%,
+    rgba(255, 204, 0, 0.2) 100%
   );
-  border: 1px solid rgba(168, 181, 196, 0.3);
+  border: 2px solid #000000;
   overflow: hidden;
 }
 
@@ -156,7 +212,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.3),
     transparent
   );
   animation: holographic-shine 4s ease-in-out infinite;
@@ -167,15 +223,14 @@
   100% { transform: translateX(100%); }
 }
 
-/* Subtle glow effect for agent cards */
 .agent-glow {
   box-shadow: 
-    0 0 8px rgba(142, 197, 252, 0.2),
-    0 0 16px rgba(168, 181, 196, 0.1);
+    0 4px 0 rgba(0, 0, 0, 0.25),
+    0 0 8px rgba(255, 204, 0, 0.3);
 }
 
 .agent-glow:hover {
   box-shadow: 
-    0 0 12px rgba(142, 197, 252, 0.3),
-    0 0 24px rgba(168, 181, 196, 0.15);
+    0 4px 0 rgba(0, 0, 0, 0.25),
+    0 0 16px rgba(255, 204, 0, 0.5);
 }

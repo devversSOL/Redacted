@@ -2,10 +2,14 @@
 
 import React, { useState } from "react"
 import useSWR from "swr"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import {
+  HabboCard,
+  HabboButton,
+  HabboInput,
+  HabboPill,
+  HabboTabBar,
+  HabboTab,
+} from "@/components/habbo-ui"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { getFirstAvailableHeaders } from "@/lib/byok"
 import {
@@ -92,21 +96,21 @@ export function EvidenceSidebar({ investigationId }: EvidenceSidebarProps) {
   const getFileIcon = (filename: string) => {
     const ext = filename.split(".").pop()?.toLowerCase()
     if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext || "")) {
-      return <Image className="w-4 h-4 text-blue-400" />
+      return <Image className="w-4 h-4 text-[#6fa6c3]" />
     }
     if (ext === "pdf") {
-      return <FileText className="w-4 h-4 text-red-400" />
+      return <FileText className="w-4 h-4 text-[#dc2626]" />
     }
-    return <File className="w-4 h-4 text-muted-foreground" />
+    return <File className="w-4 h-4 text-[#3b5f76]" />
   }
 
   return (
-    <Card className="h-full flex flex-col bg-card/80 backdrop-blur-sm">
+    <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="p-3 border-b border-border">
+      <div className="pb-3 border-b-2 border-[#3b5f76]">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold text-sm flex items-center gap-2">
-            <FileText className="w-4 h-4 text-primary" />
+          <h2 className="font-bold text-sm flex items-center gap-2 text-[#0b2a3a]">
+            <FileText className="w-4 h-4 text-[#ffcc00]" />
             Evidence Locker
           </h2>
           <label className="cursor-pointer">
@@ -118,12 +122,11 @@ export function EvidenceSidebar({ investigationId }: EvidenceSidebarProps) {
               onChange={handleFileUpload}
               disabled={uploading}
             />
-            <Button 
-              size="sm" 
-              variant="outline" 
-              className="h-7 px-2 text-xs cursor-pointer hover:bg-primary/10" 
-              asChild 
+            <HabboButton 
+              variant="primary" 
+              size="sm"
               disabled={uploading}
+              asChild
             >
               <span>
                 {uploading ? (
@@ -135,87 +138,78 @@ export function EvidenceSidebar({ investigationId }: EvidenceSidebarProps) {
                   </>
                 )}
               </span>
-            </Button>
+            </HabboButton>
           </label>
         </div>
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-          <Input
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#3b5f76]" />
+          <HabboInput
             placeholder="Search evidence..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-8 pl-8 text-xs"
+            className="pl-9 h-8 text-xs"
           />
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 mt-3">
-          {[
-            { id: "recent", label: "Recent" },
-            { id: "docs", label: `Docs (${documents.length})` },
-            { id: "evidence", label: `Evidence (${evidence.length})` },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-2 py-1 text-[10px] rounded transition-colors ${
-                activeTab === tab.id
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <HabboTabBar className="mt-3">
+          <HabboTab active={activeTab === "recent"} onClick={() => setActiveTab("recent")}>
+            Recent
+          </HabboTab>
+          <HabboTab active={activeTab === "docs"} onClick={() => setActiveTab("docs")}>
+            Docs ({documents.length})
+          </HabboTab>
+          <HabboTab active={activeTab === "evidence"} onClick={() => setActiveTab("evidence")}>
+            Evidence ({evidence.length})
+          </HabboTab>
+        </HabboTabBar>
       </div>
 
       {/* Content */}
-      <ScrollArea className="flex-1">
-        <div className="p-2 space-y-1">
+      <ScrollArea className="flex-1 -mx-3 px-3">
+        <div className="py-2 space-y-1.5">
           {activeTab === "recent" && (
             <>
-              {/* Combined recent items */}
               {[...documents, ...evidence]
                 .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
                 .slice(0, 15)
                 .map((item: any) => (
                   <button
                     key={item.id}
-                    className="w-full text-left p-2 rounded hover:bg-muted/50 transition-colors group"
+                    className="w-full text-left p-2 rounded-lg border-2 border-black bg-white hover:bg-[#eef6fb] transition-colors group shadow-[inset_0_0_0_2px_#6fa6c3]"
                   >
                     <div className="flex items-start gap-2">
                       {item.filename ? (
                         getFileIcon(item.filename)
                       ) : (
-                        <Link2 className="w-4 h-4 text-cyan-400" />
+                        <Link2 className="w-4 h-4 text-[#ffcc00]" />
                       )}
                       <div className="flex-1 min-w-0">
-                        <div className="text-xs font-medium truncate">
+                        <div className="text-xs font-medium truncate text-[#0b2a3a]">
                           {item.filename || item.claim?.substring(0, 40) + "..."}
                         </div>
-                        <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-0.5">
+                        <div className="flex items-center gap-2 text-[10px] text-[#3b5f76] mt-0.5">
                           <Clock className="w-3 h-3" />
                           {formatTimeAgo(item.created_at)}
                           {item.claim_type && (
-                            <Badge variant="outline" className="text-[8px] px-1 py-0 h-3">
+                            <HabboPill variant="info" className="text-[8px] px-1 py-0">
                               {item.claim_type}
-                            </Badge>
+                            </HabboPill>
                           )}
                         </div>
                       </div>
-                      <ChevronRight className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ChevronRight className="w-3 h-3 text-[#6fa6c3] opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </button>
                 ))}
 
               {documents.length === 0 && evidence.length === 0 && (
                 <div className="p-4 text-center">
-                  <FileText className="w-8 h-8 mx-auto mb-2 text-muted-foreground/30" />
-                  <p className="text-xs text-muted-foreground">No evidence yet</p>
-                  <p className="text-[10px] text-muted-foreground">Upload documents above</p>
+                  <FileText className="w-8 h-8 mx-auto mb-2 text-[#6fa6c3]" />
+                  <p className="text-xs text-[#3b5f76] font-medium">No evidence yet</p>
+                  <p className="text-[10px] text-[#6fa6c3]">Upload documents above</p>
                 </div>
               )}
             </>
@@ -226,20 +220,20 @@ export function EvidenceSidebar({ investigationId }: EvidenceSidebarProps) {
               {documents.map((doc: any) => (
                 <button
                   key={doc.id}
-                  className="w-full text-left p-2 rounded hover:bg-muted/50 transition-colors group"
+                  className="w-full text-left p-2 rounded-lg border-2 border-black bg-white hover:bg-[#eef6fb] transition-colors group shadow-[inset_0_0_0_2px_#6fa6c3]"
                 >
                   <div className="flex items-start gap-2">
                     {getFileIcon(doc.filename)}
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs font-medium truncate">{doc.filename}</div>
-                      <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-0.5">
+                      <div className="text-xs font-medium truncate text-[#0b2a3a]">{doc.filename}</div>
+                      <div className="flex items-center gap-2 text-[10px] text-[#3b5f76] mt-0.5">
                         {doc.ocr_status === "completed" ? (
-                          <CheckCircle className="w-3 h-3 text-green-500" />
+                          <CheckCircle className="w-3 h-3 text-[#22c55e]" />
                         ) : (
-                          <AlertCircle className="w-3 h-3 text-yellow-500" />
+                          <AlertCircle className="w-3 h-3 text-[#f59e0b]" />
                         )}
                         <span>{doc.ocr_status || "pending"}</span>
-                        <span>•</span>
+                        <span>|</span>
                         <span>{formatTimeAgo(doc.created_at)}</span>
                       </div>
                     </div>
@@ -249,8 +243,8 @@ export function EvidenceSidebar({ investigationId }: EvidenceSidebarProps) {
 
               {documents.length === 0 && (
                 <div className="p-4 text-center">
-                  <FileText className="w-8 h-8 mx-auto mb-2 text-muted-foreground/30" />
-                  <p className="text-xs text-muted-foreground">No documents uploaded</p>
+                  <FileText className="w-8 h-8 mx-auto mb-2 text-[#6fa6c3]" />
+                  <p className="text-xs text-[#3b5f76] font-medium">No documents uploaded</p>
                 </div>
               )}
             </>
@@ -261,18 +255,18 @@ export function EvidenceSidebar({ investigationId }: EvidenceSidebarProps) {
               {evidence.map((ev: any) => (
                 <button
                   key={ev.id}
-                  className="w-full text-left p-2 rounded hover:bg-muted/50 transition-colors group"
+                  className="w-full text-left p-2 rounded-lg border-2 border-black bg-white hover:bg-[#eef6fb] transition-colors group shadow-[inset_0_0_0_2px_#6fa6c3]"
                 >
                   <div className="flex items-start gap-2">
-                    <Bot className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                    <Bot className="w-4 h-4 text-[#ffcc00] shrink-0 mt-0.5" />
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs line-clamp-2">{ev.claim}</div>
-                      <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-1">
-                        <Badge variant="outline" className="text-[8px] px-1 py-0 h-3">
+                      <div className="text-xs line-clamp-2 text-[#0b2a3a]">{ev.claim}</div>
+                      <div className="flex items-center gap-2 text-[10px] text-[#3b5f76] mt-1">
+                        <HabboPill variant="info" className="text-[8px] px-1 py-0">
                           {ev.claim_type}
-                        </Badge>
-                        <span>{Math.round((ev.confidence || 0) * 100)}%</span>
-                        <span>•</span>
+                        </HabboPill>
+                        <span className="font-bold">{Math.round((ev.confidence || 0) * 100)}%</span>
+                        <span>|</span>
                         <span>{formatTimeAgo(ev.created_at)}</span>
                       </div>
                     </div>
@@ -282,8 +276,8 @@ export function EvidenceSidebar({ investigationId }: EvidenceSidebarProps) {
 
               {evidence.length === 0 && (
                 <div className="p-4 text-center">
-                  <Bot className="w-8 h-8 mx-auto mb-2 text-muted-foreground/30" />
-                  <p className="text-xs text-muted-foreground">No evidence extracted</p>
+                  <Bot className="w-8 h-8 mx-auto mb-2 text-[#6fa6c3]" />
+                  <p className="text-xs text-[#3b5f76] font-medium">No evidence extracted</p>
                 </div>
               )}
             </>
@@ -292,7 +286,7 @@ export function EvidenceSidebar({ investigationId }: EvidenceSidebarProps) {
       </ScrollArea>
 
       {/* Quick Actions */}
-      <div className="p-2 border-t border-border">
+      <div className="pt-2 border-t-2 border-[#3b5f76]">
         <label className="cursor-pointer block">
           <input
             type="file"
@@ -302,18 +296,18 @@ export function EvidenceSidebar({ investigationId }: EvidenceSidebarProps) {
             onChange={handleFileUpload}
             disabled={uploading}
           />
-          <div className="border border-dashed border-border rounded p-3 text-center hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer">
+          <HabboCard variant="blue" className="p-3 text-center hover:bg-[#d9e6ef] transition-colors cursor-pointer border-dashed">
             {uploading ? (
-              <Loader2 className="w-5 h-5 mx-auto animate-spin text-primary" />
+              <Loader2 className="w-5 h-5 mx-auto animate-spin text-[#ffcc00]" />
             ) : (
-              <Plus className="w-5 h-5 mx-auto text-muted-foreground" />
+              <Plus className="w-5 h-5 mx-auto text-[#3b5f76]" />
             )}
-            <p className="text-[10px] text-muted-foreground mt-1">
+            <p className="text-[10px] text-[#3b5f76] mt-1 font-medium">
               {uploading ? "Processing..." : "Drop files here"}
             </p>
-          </div>
+          </HabboCard>
         </label>
       </div>
-    </Card>
+    </div>
   )
 }
