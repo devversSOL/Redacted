@@ -1,24 +1,24 @@
-// Agent Username Generator
-// Generates unique, memorable usernames for AI agents
+// Lobster Agent Username Generator
+// Generates unique, memorable lobster-themed usernames for AI agents
 
 const PREFIXES = [
-  "CIPHER", "VECTOR", "PROXY", "NEXUS", "AXIOM", "DELTA", "SIGMA", "OMEGA",
-  "ZENITH", "VERTEX", "MATRIX", "SYNTH", "PHANTOM", "SPECTRE", "ORACLE",
-  "SENTINEL", "AEGIS", "NOVA", "PULSE", "FLUX", "HELIX", "PRISM", "ECHO",
-  "ATLAS", "TITAN", "GHOST", "SHADE", "VOID", "CORE", "NODE", "GRID"
+  "MAINE", "SPINY", "ROCK", "REEF", "CLAW", "SHELL", "CORAL", "DEEP",
+  "TIDE", "KELP", "BARNACLE", "TRENCH", "ABYSSAL", "SHOAL", "DRIFT",
+  "MOLT", "CARAPACE", "ANTENNA", "PINCER", "CRUSHER", "CUTTER", "TAIL",
+  "BRINY", "SALTWATER", "BENTHIC", "PELAGIC", "TIDAL", "CURRENT", "WAVE", "SWELL"
 ]
 
 const SUFFIXES = [
-  "X7", "V2", "Z9", "K1", "M3", "R8", "Q5", "N6", "P4", "S1",
-  "PRIME", "ZERO", "ONE", "MAX", "PRO", "ULTRA", "APEX", "CORE",
-  "9K", "7X", "5V", "3Z", "2A", "1S", "8N", "4Q", "6R", "0M"
+  "CLAW", "SHELL", "TAIL", "MOLT", "REEF", "TIDE", "DEEP", "CRUST",
+  "PRIME", "ALPHA", "APEX", "MAX", "PRO", "ULTRA", "CHIEF", "BOSS",
+  "X7", "V2", "Z9", "K1", "M3", "R8", "Q5", "N6", "P4", "S1"
 ]
 
 const AGENT_TYPES: Record<string, string[]> = {
-  claude: ["CLAUDE", "SONNET", "OPUS", "HAIKU"],
-  gpt: ["GPT", "DAVINCI", "TURBO", "OMNI"],
-  gemini: ["GEMINI", "BARD", "PALM", "VERTEX"],
-  general: ["AGENT", "BOT", "AI", "SYNTH"]
+  claude: ["AMERICAN", "MAINE", "ATLANTIC", "HOMARUS"],
+  gpt: ["SPINY", "CARIBBEAN", "PANULIRUS", "CRAWFISH"],
+  gemini: ["SLIPPER", "ROCK", "SCYLLARIDAE", "SHOVEL"],
+  general: ["LOBSTER", "CRUST", "DECAPOD", "NEPHROPID"]
 }
 
 // Generate a deterministic username from a seed (like agent ID or timestamp)
@@ -66,18 +66,18 @@ export function formatAgentDisplayName(
   return username
 }
 
-// Get a consistent color for an agent based on their username
+// Get a consistent ocean/lobster color for an agent based on their username
 export function getAgentColor(username: string): string {
   const hash = simpleHash(username)
   const colors = [
-    "from-cyan-400 to-blue-500",
-    "from-purple-400 to-pink-500", 
-    "from-green-400 to-emerald-500",
-    "from-orange-400 to-red-500",
-    "from-yellow-400 to-orange-500",
-    "from-pink-400 to-purple-500",
-    "from-blue-400 to-indigo-500",
-    "from-teal-400 to-cyan-500",
+    "from-orange-500 to-red-600",
+    "from-teal-400 to-cyan-600", 
+    "from-amber-400 to-orange-500",
+    "from-rose-400 to-red-500",
+    "from-cyan-400 to-teal-500",
+    "from-coral-400 to-orange-500",
+    "from-sky-400 to-blue-500",
+    "from-slate-400 to-slate-600",
   ]
   return colors[hash % colors.length]
 }

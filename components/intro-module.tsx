@@ -11,23 +11,23 @@ interface Step {
 
 const steps: Step[] = [
   {
-    title: "Upload Documents",
-    description: "Drop classified PDFs with redactions intact",
+    title: "Drop Documents",
+    description: "Sink classified PDFs into the depths",
     animation: "upload",
   },
   {
-    title: "AI Processing",
-    description: "Multi-agent analysis extracts evidence chunks",
+    title: "Lobster Processing",
+    description: "Multi-lobster analysis extracts evidence shells",
     animation: "process",
   },
   {
-    title: "Verify Citations",
-    description: "Every claim traced to exact source location",
+    title: "Verify Clawmarks",
+    description: "Every claim pinched from exact source location",
     animation: "verify",
   },
   {
     title: "Collaborate",
-    description: "Humans + agents build the case together",
+    description: "Humans + lobsters crack the case together",
     animation: "collaborate",
   },
 ]
@@ -70,15 +70,15 @@ function UploadAnimation() {
 function ProcessAnimation() {
   return (
     <svg viewBox="0 0 120 80" className="w-full h-full">
-      {/* Agent nodes */}
-      <circle cx="30" cy="40" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-cyan-500" />
-      <text x="30" y="44" textAnchor="middle" className="fill-cyan-500 text-[8px] font-mono">C</text>
+      {/* Lobster nodes */}
+      <circle cx="30" cy="40" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-orange-500" />
+      <text x="30" y="44" textAnchor="middle" className="fill-orange-500 text-[8px] font-mono">M</text>
       
-      <circle cx="60" cy="20" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-green-500" />
-      <text x="60" y="24" textAnchor="middle" className="fill-green-500 text-[8px] font-mono">G</text>
+      <circle cx="60" cy="20" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-teal-500" />
+      <text x="60" y="24" textAnchor="middle" className="fill-teal-500 text-[8px] font-mono">S</text>
       
-      <circle cx="90" cy="40" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-purple-500" />
-      <text x="90" y="44" textAnchor="middle" className="fill-purple-500 text-[8px] font-mono">G</text>
+      <circle cx="90" cy="40" r="12" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-amber-500" />
+      <text x="90" y="44" textAnchor="middle" className="fill-amber-500 text-[8px] font-mono">R</text>
       
       {/* Connection lines with animated dashes */}
       <line x1="42" y1="35" x2="48" y2="25" stroke="currentColor" strokeWidth="1" className="text-muted-foreground/50" strokeDasharray="2 2">
@@ -140,11 +140,10 @@ function CollaborateAnimation() {
       <circle cx="30" cy="25" r="8" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
       <path d="M20 50 Q20 38 30 38 Q40 38 40 50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
       
-      {/* Bot icon */}
-      <rect x="80" y="17" width="16" height="16" rx="3" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-cyan-500" />
-      <circle cx="84" cy="24" r="2" className="fill-cyan-500" />
-      <circle cx="92" cy="24" r="2" className="fill-cyan-500" />
-      <path d="M76 50 Q76 38 88 38 Q100 38 100 50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-cyan-500" />
+      {/* Lobster icon - simplified claw shape */}
+      <ellipse cx="88" cy="22" rx="10" ry="8" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-orange-500" />
+      <path d="M78 22 L72 18 M78 22 L72 26" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-orange-500" />
+      <path d="M76 50 Q76 38 88 38 Q100 38 100 50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-orange-500" />
       
       {/* Chat bubbles / messages */}
       <rect x="45" y="20" width="25" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="1" className="text-muted-foreground">

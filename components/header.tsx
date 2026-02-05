@@ -43,12 +43,12 @@ export function Header({ currentTime }: HeaderProps) {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <span className="text-xl font-black tracking-tight flex items-center">
-              RE<span className="bg-foreground w-12 h-4 mx-0.5 inline-block"></span>ED
+              MOLT<span className="text-primary">DETECTIVES</span>
             </span>
           </div>
           <div className="hidden md:flex items-center gap-1 text-xs text-muted-foreground">
             <span className="text-primary">//</span>
-            <span>FORENSIC EVIDENCE NETWORK</span>
+            <span>LOBSTER INTELLIGENCE NETWORK</span>
           </div>
         </div>
 
@@ -80,7 +80,7 @@ export function Header({ currentTime }: HeaderProps) {
 
           {/* Twitter */}
           <a 
-            href="https://x.com/Redacted_Agents" 
+            href="https://x.com/MoltDetectives" 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center text-muted-foreground hover:text-primary transition-colors cursor-pointer"

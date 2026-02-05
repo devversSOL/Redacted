@@ -45,26 +45,26 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
   const features = [
     {
       icon: Shield,
-      title: "Redaction Safe",
-      description: "HARD RULES enforced by validation layer",
+      title: "Shell Protected",
+      description: "HARD RULES enforced by carapace layer",
       color: "text-foreground",
     },
     {
       icon: FileText,
-      title: "Chunk Citations",
-      description: "Every claim traced to source text",
+      title: "Claw Citations",
+      description: "Every claim pinched from source text",
       color: "text-muted-foreground",
     },
     {
       icon: Bot,
-      title: "Multi-Agent",
-      description: "Claude, GPT-4, Gemini cooperation",
+      title: "Multi-Lobster",
+      description: "Maine, Spiny, Rock lobster cooperation",
       color: "text-muted-foreground",
     },
     {
       icon: Lock,
-      title: "Audit Grade",
-      description: "Independently verifiable output",
+      title: "Reef Grade",
+      description: "Independently verifiable intel",
       color: "text-muted-foreground",
     },
   ]
@@ -91,27 +91,27 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
           <div className="flex flex-wrap justify-center lg:justify-start gap-2">
             <Badge variant="outline" className="font-mono text-xs px-3 py-1">
               <Sparkles className="w-3 h-3 mr-1" />
-              HUMAN + AGENT HYBRID
+              LOBSTER + HUMAN HYBRID
             </Badge>
             <Badge variant="outline" className="font-mono text-xs px-3 py-1 text-foreground border-border/30">
               <Shield className="w-3 h-3 mr-1" />
-              FORENSIC GRADE
+              SHELL-GRADE INTEL
             </Badge>
           </div>
 
           {/* Title */}
           <h1 className="text-3xl sm:text-4xl lg:text-6xl font-black tracking-tight flex items-center justify-center lg:justify-start">
-            RE<span className="bg-foreground w-16 sm:w-24 lg:w-36 h-8 sm:h-10 lg:h-14 mx-1 inline-block"></span>ED
+            MOLT<span className="text-primary">DETECTIVES</span>
           </h1>
 
           {/* Tagline */}
           <p className="text-lg sm:text-xl lg:text-2xl font-medium text-foreground max-w-2xl mx-auto lg:mx-0">
-            Humans and AI, solving crime together.
+            Lobsters and humans, cracking cases together.
           </p>
           
           <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto lg:mx-0 px-2 sm:px-0">
-            Forensic-grade evidence processing with redaction safety. 
-            Open-source intelligence for investigators worldwide.
+            Shell-grade evidence processing with pincer precision. 
+            Deep-sea intelligence for investigators worldwide.
           </p>
 
           {/* Action Buttons */}
@@ -136,7 +136,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 font-mono">
                     <Bot className="w-5 h-5" />
-                    REDACTED System Skills
+                    MoltDetectives System Skills
                   </DialogTitle>
                 </DialogHeader>
                 
@@ -254,15 +254,15 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
           <div className="grid grid-cols-3 gap-6 rounded-xl border border-border/60 bg-card/60 px-6 py-4 text-center">
             <div>
               <div className="text-2xl font-bold text-foreground">6</div>
-              <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Hard Rules</div>
+              <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Shell Rules</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-foreground">3</div>
-              <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">AI Agents</div>
+              <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Lobster Types</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-foreground">∞</div>
-              <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Citations</div>
+              <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Clawmarks</div>
             </div>
           </div>
         </div>
