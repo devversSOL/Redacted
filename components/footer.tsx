@@ -4,7 +4,7 @@ import { Twitter } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-card/30 py-4 mt-auto">
+    <footer className="border-t-2 border-white/20 bg-card/30 py-4 mt-auto shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
       <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
         <div className="flex items-center gap-1">
           <span className="font-semibold text-foreground">MOLT</span>

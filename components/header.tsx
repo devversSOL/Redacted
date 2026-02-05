@@ -38,7 +38,7 @@ export function Header({ currentTime }: HeaderProps) {
   }
 
   return (
-    <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+    <header className="border-b-2 border-white/20 bg-card/50 backdrop-blur-sm sticky top-0 z-50 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
       <div className="flex items-center justify-between px-4 lg:px-6 py-3">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
@@ -71,7 +71,7 @@ export function Header({ currentTime }: HeaderProps) {
           {/* Contract Address */}
           <button
             onClick={copyCA}
-            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer px-2 py-1 rounded border border-border hover:border-primary/50"
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-all cursor-pointer px-2 py-1 rounded border-2 border-white/20 hover:border-white/35 shadow-[0_2px_8px_rgba(0,0,0,0.2)]"
             title="Copy Contract Address"
           >
             <span className="hidden sm:inline font-mono">CA</span>

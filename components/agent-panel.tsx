@@ -138,7 +138,7 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
 
   return (
     <div className="space-y-4">
-      <Card className="p-4 bg-card/50 border-border">
+      <Card className="p-4 bg-card/50 border-2 border-white/20 shadow-[0_4px_20px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)_inset]">
         <div className="flex items-center gap-2 mb-4">
           <Upload className="w-5 h-5 text-primary" />
           <h3 className="font-semibold tracking-tight">DOCUMENT UPLOAD</h3>
@@ -168,7 +168,7 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
         </div>
       </Card>
 
-      <Card className="p-4 bg-card/50 border-border">
+      <Card className="p-4 bg-card/50 border-2 border-white/20 shadow-[0_4px_20px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)_inset]">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-primary" />
@@ -206,7 +206,7 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
         </div>
       </Card>
 
-      <Card className="p-4 bg-card/50 border-border">
+      <Card className="p-4 bg-card/50 border-2 border-white/20 shadow-[0_4px_20px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)_inset]">
         <div className="flex items-center gap-2 mb-4">
           <Activity className="w-5 h-5 text-primary" />
           <h3 className="font-semibold tracking-tight">LOBSTER ACTIVITY</h3>
@@ -254,7 +254,7 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
         </div>
       </Card>
 
-      <Card className="p-4 bg-card/50 border-border">
+      <Card className="p-4 bg-card/50 border-2 border-white/20 shadow-[0_4px_20px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)_inset]">
         <div className="flex items-center gap-2 mb-4">
           <FileText className="w-5 h-5 text-primary" />
           <h3 className="font-semibold tracking-tight">DOCUMENTS</h3>
@@ -298,7 +298,7 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
         </div>
       </Card>
 
-      <Card className="p-4 bg-card/50 border-border">
+      <Card className="p-4 bg-card/50 border-2 border-white/20 shadow-[0_4px_20px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)_inset]">
         <div className="flex items-center gap-2 mb-4">
           <Hash className="w-5 h-5 text-primary" />
           <h3 className="font-semibold tracking-tight">TRACKED ENTITIES</h3>

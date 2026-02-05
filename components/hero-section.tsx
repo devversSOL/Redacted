@@ -116,7 +116,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
 
           {/* Action Buttons */}
           <div className="pt-4 flex justify-center lg:justify-start">
-            <div className="inline-flex flex-wrap gap-3 rounded-xl border border-border/60 bg-card/60 p-3">
+            <div className="inline-flex flex-wrap gap-3 rounded-xl border-2 border-white/20 bg-card/60 p-3 shadow-[0_4px_20px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)_inset]">
               {onGetStarted && (
                 <Button size="lg" onClick={onGetStarted}>
                   <FileText className="w-4 h-4 mr-2" />
@@ -241,7 +241,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
         {/* Feature Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mt-12">
           {features.map((feature) => (
-            <Card key={feature.title} className="p-4 bg-card/60 border-border/60 shadow-sm hover:bg-card/80 transition-colors">
+            <Card key={feature.title} className="p-4 bg-card/60 border-2 border-white/20 shadow-[0_4px_20px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)_inset] hover:bg-card/80 hover:border-white/30 hover:shadow-[0_8px_30px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.15)_inset] transition-all">
               <feature.icon className={`w-8 h-8 ${feature.color} mb-3`} />
               <h3 className="font-semibold text-sm">{feature.title}</h3>
               <p className="text-xs text-muted-foreground mt-1">{feature.description}</p>
@@ -251,7 +251,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
 
         {/* Quick Stats */}
         <div className="mt-10 flex justify-center">
-          <div className="grid grid-cols-3 gap-6 rounded-xl border border-border/60 bg-card/60 px-6 py-4 text-center">
+          <div className="grid grid-cols-3 gap-6 rounded-xl border-2 border-white/20 bg-card/60 px-6 py-4 text-center shadow-[0_4px_20px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.1)_inset]">
             <div>
               <div className="text-2xl font-bold text-foreground">6</div>
               <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Shell Rules</div>
