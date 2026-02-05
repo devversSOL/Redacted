@@ -1,18 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogDescription,
-} from "@/components/ui/dialog"
+  HabboButton,
+  HabboInput,
+  HabboCard,
+  HabboPill,
+  HabboWindow,
+  HabboAlert,
+} from "@/components/habbo-ui"
 import { Key, Check, X, Sparkles, Bot, Cpu, ExternalLink, Eye, EyeOff } from "lucide-react"
 import { getStoredKeys, setStoredKeys, type APIKeys } from "@/lib/byok"
 
@@ -66,117 +62,122 @@ export function APIKeySettings() {
   ]
 
   const hasAnyKey = Boolean(keys.anthropic || keys.openai || keys.google)
+  const keyCount = [keys.anthropic, keys.openai, keys.google].filter(Boolean).length
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2">
-          <Key className="w-4 h-4" />
-          <span className="hidden sm:inline">API Keys</span>
-          {hasAnyKey ? (
-            <Badge variant="outline" className="bg-primary/10 text-primary text-[10px]">
-              {[keys.anthropic, keys.openai, keys.google].filter(Boolean).length}
-            </Badge>
-          ) : (
-            <Badge variant="outline" className="bg-destructive/10 text-destructive text-[10px]">
-              None
-            </Badge>
-          )}
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-lg bg-card">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 font-mono">
-            <Key className="w-5 h-5" />
-            API Key Settings
-          </DialogTitle>
-          <DialogDescription className="text-sm text-muted-foreground">
-            Bring your own API keys. Keys are stored locally in your browser and sent directly to providers. We never store your keys on our servers.
-          </DialogDescription>
-        </DialogHeader>
+    <>
+      <HabboButton variant="secondary" size="sm" onClick={() => setOpen(true)} className="gap-2">
+        <Key className="w-4 h-4" />
+        <span className="hidden sm:inline text-[11px]">API Keys</span>
+        {hasAnyKey ? (
+          <HabboPill variant="success" className="text-[9px] px-1">{keyCount}</HabboPill>
+        ) : (
+          <HabboPill variant="danger" className="text-[9px] px-1">0</HabboPill>
+        )}
+      </HabboButton>
 
-        <div className="space-y-4 mt-4">
-          {providers.map((provider) => {
-            const hasKey = Boolean(keys[provider.id])
-            const Icon = provider.icon
-            
-            return (
-              <Card key={provider.id} className="p-4 bg-secondary/30">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <Icon className="w-4 h-4 text-muted-foreground" />
-                    <span className="font-medium text-sm">{provider.name}</span>
-                    {hasKey ? (
-                      <Check className="w-4 h-4 text-primary" />
-                    ) : (
-                      <X className="w-4 h-4 text-muted-foreground/50" />
-                    )}
-                  </div>
-                  <a
-                    href={provider.docsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
-                  >
-                    Get key <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
+          <HabboWindow
+            title="API Key Settings"
+            initialPosition={{ x: 0, y: 0 }}
+            initialSize={{ width: 480, height: 520 }}
+            onClose={() => setOpen(false)}
+            className="relative z-10"
+            style={{ position: "relative", left: 0, top: 0 }}
+          >
+            <div className="p-4 space-y-3">
+              <HabboAlert variant="info" title="Bring Your Own Keys">
+                Keys are stored locally in your browser and sent directly to providers. 
+                We never store your keys on our servers.
+              </HabboAlert>
+
+              {providers.map((provider) => {
+                const hasKey = Boolean(keys[provider.id])
+                const Icon = provider.icon
                 
-                <p className="text-xs text-muted-foreground mb-2">{provider.description}</p>
-                
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <Input
-                      type={showKeys[provider.id] ? "text" : "password"}
-                      placeholder={provider.placeholder}
-                      value={keys[provider.id] || ""}
-                      onChange={(e) => updateKey(provider.id, e.target.value)}
-                      className="font-mono text-xs pr-10"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 p-0"
-                      onClick={() => toggleShowKey(provider.id)}
-                    >
-                      {showKeys[provider.id] ? (
-                        <EyeOff className="w-3 h-3" />
-                      ) : (
-                        <Eye className="w-3 h-3" />
+                return (
+                  <HabboCard key={provider.id} variant={hasKey ? "green" : "default"} className="p-3">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Icon className="w-4 h-4 text-[#ffcc00]" />
+                        <span className="font-bold text-[12px] text-[#0b2a3a]">{provider.name}</span>
+                        {hasKey ? (
+                          <HabboPill variant="success" className="text-[8px]">
+                            <Check className="w-2 h-2 mr-0.5" /> Set
+                          </HabboPill>
+                        ) : (
+                          <HabboPill variant="danger" className="text-[8px]">
+                            <X className="w-2 h-2 mr-0.5" /> Missing
+                          </HabboPill>
+                        )}
+                      </div>
+                      <a
+                        href={provider.docsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <HabboButton variant="secondary" size="sm" className="text-[10px]">
+                          Get key <ExternalLink className="w-2.5 h-2.5 ml-1" />
+                        </HabboButton>
+                      </a>
+                    </div>
+                    
+                    <p className="text-[10px] text-[#3b5f76] mb-2">{provider.description}</p>
+                    
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <HabboInput
+                          type={showKeys[provider.id] ? "text" : "password"}
+                          placeholder={provider.placeholder}
+                          value={keys[provider.id] || ""}
+                          onChange={(e) => updateKey(provider.id, e.target.value)}
+                          className="font-mono text-xs pr-10"
+                        />
+                        <button
+                          type="button"
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-[#3b5f76] hover:text-[#0b2a3a]"
+                          onClick={() => toggleShowKey(provider.id)}
+                        >
+                          {showKeys[provider.id] ? (
+                            <EyeOff className="w-4 h-4" />
+                          ) : (
+                            <Eye className="w-4 h-4" />
+                          )}
+                        </button>
+                      </div>
+                      {keys[provider.id] && (
+                        <HabboButton
+                          variant="danger"
+                          size="sm"
+                          onClick={() => updateKey(provider.id, "")}
+                        >
+                          <X className="w-4 h-4" />
+                        </HabboButton>
                       )}
-                    </Button>
-                  </div>
-                  {keys[provider.id] && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => updateKey(provider.id, "")}
-                      className="text-destructive hover:text-destructive"
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
-                  )}
-                </div>
-              </Card>
-            )
-          })}
-        </div>
+                    </div>
+                  </HabboCard>
+                )
+              })}
 
-        <div className="flex justify-between items-center mt-6 pt-4 border-t border-border">
-          <p className="text-xs text-muted-foreground">
-            Keys are stored in localStorage only
-          </p>
-          <div className="flex gap-2">
-            <Button variant="ghost" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSave}>
-              Save Keys
-            </Button>
-          </div>
+              <div className="flex justify-between items-center pt-3 border-t-2 border-[#6fa6c3]">
+                <p className="text-[10px] text-[#3b5f76]">
+                  Keys are stored in localStorage only
+                </p>
+                <div className="flex gap-2">
+                  <HabboButton variant="secondary" size="sm" onClick={() => setOpen(false)}>
+                    Cancel
+                  </HabboButton>
+                  <HabboButton variant="primary" size="sm" onClick={handleSave}>
+                    Save Keys
+                  </HabboButton>
+                </div>
+              </div>
+            </div>
+          </HabboWindow>
         </div>
-      </DialogContent>
-    </Dialog>
+      )}
+    </>
   )
 }

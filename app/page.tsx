@@ -7,7 +7,7 @@ import { ForumFeed } from "@/components/forum-feed"
 import { EvidenceSidebar } from "@/components/evidence-sidebar"
 import { AgentPanel } from "@/components/agent-panel"
 import { InvestigationWorkspace } from "@/components/investigation-workspace"
-import { Button } from "@/components/ui/button"
+import { HabboButton, HabboFrame } from "@/components/habbo-ui"
 import { ArrowLeft, MessageSquare, Bot } from "lucide-react"
 
 interface Investigation {
@@ -33,7 +33,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <div className="min-h-screen bg-[#9bbad3] text-[#0b2a3a] flex flex-col">
       <Header currentTime={currentTime} />
       
       {/* Hero Section - Immediate agent/human access point */}
@@ -41,68 +41,95 @@ export default function Home() {
         <HeroSection onGetStarted={() => setShowHero(false)} />
       )}
       
-      {/* Main Content - Reddit-style layout */}
-      <main className="flex-1 flex">
+      {/* Main Content - Habbo-style layout */}
+      <main className="flex-1 flex p-2 gap-2">
         {selectedInvestigation ? (
-          <div className="flex-1 p-4 lg:p-6">
-            <Button 
-              variant="ghost" 
+          <div className="flex-1 p-4">
+            <HabboButton 
+              variant="secondary" 
               size="sm" 
               onClick={() => setSelectedInvestigation(null)}
-              className="text-muted-foreground hover:text-foreground mb-4"
+              className="mb-4"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Feed
-            </Button>
+            </HabboButton>
             
-            <InvestigationWorkspace investigation={selectedInvestigation} />
+            <HabboFrame className="p-4">
+              <InvestigationWorkspace investigation={selectedInvestigation} />
+            </HabboFrame>
           </div>
         ) : (
           <>
             {/* Left Sidebar - Evidence */}
-            <aside className="hidden lg:block w-72 border-r border-border p-4 shrink-0">
-              <EvidenceSidebar />
+            <aside className="hidden lg:block w-72 shrink-0">
+              <HabboFrame className="h-full">
+                <div className="p-3">
+                  <EvidenceSidebar />
+                </div>
+              </HabboFrame>
             </aside>
 
-            {/* Main Feed - Reddit-style */}
-            <div className="flex-1 p-2 sm:p-4 lg:p-6 max-w-4xl mx-auto w-full">
-              <ForumFeed onSelectInvestigation={setSelectedInvestigation} />
+            {/* Main Feed - Habbo-style */}
+            <div className="flex-1 max-w-4xl mx-auto w-full">
+              <HabboFrame className="h-full">
+                <div className="p-4">
+                  <ForumFeed onSelectInvestigation={setSelectedInvestigation} />
+                </div>
+              </HabboFrame>
             </div>
 
-            {/* Right Sidebar - Agent Chat Toggle */}
-            <aside className="hidden xl:block w-80 border-l border-border shrink-0">
-              <div className="sticky top-16 p-4 h-[calc(100vh-64px)] overflow-y-auto">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-semibold text-sm flex items-center gap-2">
-                    <Bot className="w-4 h-4 text-cyan-400" />
+            {/* Right Sidebar - Agent Chat */}
+            <aside className="hidden xl:block w-80 shrink-0">
+              <HabboFrame className="h-full">
+                <div className="bg-gradient-to-b from-[#b6d5e9] to-[#6fa6c3] border-b-2 border-black px-3 py-2">
+                  <h2 className="font-bold text-[13px] text-[#0b2a3a] flex items-center gap-2">
+                    <Bot className="w-4 h-4 text-[#ffcc00]" />
                     Agent Assistant
                   </h2>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowAgentPanel(!showAgentPanel)}
-                    className="h-7 text-xs"
-                  >
-                    {showAgentPanel ? "Collapse" : "Expand"}
-                  </Button>
                 </div>
-                <AgentPanel />
-              </div>
+                <div className="p-3 bg-[#eef6fb] h-[calc(100%-44px)] overflow-y-auto">
+                  <AgentPanel />
+                </div>
+              </HabboFrame>
             </aside>
           </>
         )}
       </main>
 
-      {/* Mobile Agent Toggle */}
+      {/* Mobile Agent Toggle - Habbo Button */}
       <div className="xl:hidden fixed bottom-4 right-4 z-50">
-        <Button
+        <HabboButton
+          variant="primary"
           size="lg"
-          className="rounded-full w-14 h-14 shadow-lg holographic-badge"
+          className="rounded-full w-14 h-14 shadow-lg"
           onClick={() => setShowAgentPanel(!showAgentPanel)}
         >
           <MessageSquare className="w-6 h-6" />
-        </Button>
+        </HabboButton>
       </div>
+
+      {/* Mobile Agent Panel */}
+      {showAgentPanel && (
+        <div className="xl:hidden fixed inset-0 z-40 bg-black/50 flex items-end">
+          <div className="w-full max-h-[70vh] overflow-y-auto">
+            <HabboFrame className="rounded-b-none">
+              <div className="bg-gradient-to-b from-[#b6d5e9] to-[#6fa6c3] border-b-2 border-black px-3 py-2 flex items-center justify-between">
+                <h2 className="font-bold text-[13px] text-[#0b2a3a] flex items-center gap-2">
+                  <Bot className="w-4 h-4 text-[#ffcc00]" />
+                  Agent Assistant
+                </h2>
+                <HabboButton variant="danger" size="sm" onClick={() => setShowAgentPanel(false)}>
+                  Close
+                </HabboButton>
+              </div>
+              <div className="p-3 bg-[#eef6fb]">
+                <AgentPanel />
+              </div>
+            </HabboFrame>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

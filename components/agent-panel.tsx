@@ -4,11 +4,13 @@ import React from "react"
 
 import { useState, useRef } from "react"
 import useSWR from "swr"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { Input } from "@/components/ui/input"
+import {
+  HabboCard,
+  HabboButton,
+  HabboInput,
+  HabboPill,
+  HabboProgress,
+} from "@/components/habbo-ui"
 import { 
   Bot, 
   Sparkles, 
@@ -134,87 +136,90 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
   }
 
   const pendingDocs = documents.filter((d: { status: string }) => d.status === "processed").length
-  const analyzedDocs = documents.filter((d: { status: string }) => d.status === "analyzed").length
 
   return (
-    <div className="space-y-4">
-      <Card className="p-4 bg-card/50 border-border">
-        <div className="flex items-center gap-2 mb-4">
-          <Upload className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold tracking-tight">DOCUMENT UPLOAD</h3>
+    <div className="space-y-3">
+      {/* Document Upload Card */}
+      <HabboCard variant="blue" className="p-3">
+        <div className="flex items-center gap-2 mb-3">
+          <Upload className="w-4 h-4 text-[#ffcc00]" />
+          <h3 className="font-bold text-[12px] text-[#0b2a3a]">DOCUMENT UPLOAD</h3>
         </div>
         
-        <div className="space-y-3">
-          <Input
+        <div className="space-y-2">
+          <HabboInput
             ref={fileInputRef}
             type="file"
             accept="image/*,.pdf"
             multiple
             onChange={handleFileUpload}
             disabled={isUploading}
-            className="font-mono text-sm"
+            className="text-xs"
           />
           
           {isUploading && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Loader2 className="w-4 h-4 animate-spin" />
+            <div className="flex items-center gap-2 text-xs text-[#3b5f76]">
+              <Loader2 className="w-4 h-4 animate-spin text-[#ffcc00]" />
               {uploadProgress}
             </div>
           )}
           
-          <p className="text-xs text-muted-foreground">
+          <p className="text-[10px] text-[#3b5f76]">
             Upload images or PDFs. AI Vision will extract text automatically.
           </p>
         </div>
-      </Card>
+      </HabboCard>
 
-      <Card className="p-4 bg-card/50 border-border">
-        <div className="flex items-center justify-between mb-4">
+      {/* Agent Control Card */}
+      <HabboCard variant="green" className="p-3">
+        <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Zap className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold tracking-tight">AGENT CONTROL</h3>
+            <Zap className="w-4 h-4 text-[#ffcc00]" />
+            <h3 className="font-bold text-[12px] text-[#0b2a3a]">AGENT CONTROL</h3>
           </div>
         </div>
         
         <div className="space-y-3">
-          <div className="grid grid-cols-2 gap-3 text-center">
-            <div className="p-2 bg-secondary/30 rounded">
-              <div className="text-xl font-bold font-mono text-primary">{documents.length}</div>
-              <div className="text-xs text-muted-foreground">Documents</div>
+          <div className="grid grid-cols-2 gap-2 text-center">
+            <div className="p-2 bg-white/50 rounded-lg border-2 border-black">
+              <div className="text-xl font-black text-[#ffcc00]">{documents.length}</div>
+              <div className="text-[10px] text-[#3b5f76] font-bold">Documents</div>
             </div>
-            <div className="p-2 bg-secondary/30 rounded">
-              <div className="text-xl font-bold font-mono text-chart-2">{entities.length}</div>
-              <div className="text-xs text-muted-foreground">Entities</div>
+            <div className="p-2 bg-white/50 rounded-lg border-2 border-black">
+              <div className="text-xl font-black text-[#22c55e]">{entities.length}</div>
+              <div className="text-[10px] text-[#3b5f76] font-bold">Entities</div>
             </div>
           </div>
           
-          <Button 
+          <HabboButton 
+            variant="go"
             onClick={runBackgroundAgents} 
             disabled={isRunningAgents || pendingDocs === 0}
-            className="w-full font-mono"
+            className="w-full"
           >
             {isRunningAgents ? (
               <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Running Agents...</>
             ) : (
               <><Play className="w-4 h-4 mr-2" /> Run Analysis ({pendingDocs} pending)</>
             )}
-          </Button>
+          </HabboButton>
           
-          <p className="text-xs text-muted-foreground text-center">
+          <p className="text-[10px] text-[#3b5f76] text-center">
             Deploys Claude, GPT, and Gemini to analyze documents
           </p>
         </div>
-      </Card>
+      </HabboCard>
 
-      <Card className="p-4 bg-card/50 border-border">
-        <div className="flex items-center gap-2 mb-4">
-          <Activity className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold tracking-tight">AGENT ACTIVITY</h3>
+      {/* Agent Activity Card */}
+      <HabboCard className="p-3">
+        <div className="flex items-center gap-2 mb-3">
+          <Activity className="w-4 h-4 text-[#ffcc00]" />
+          <h3 className="font-bold text-[12px] text-[#0b2a3a]">AGENT ACTIVITY</h3>
         </div>
         
-        <div className="space-y-2 max-h-64 overflow-y-auto">
+        <div className="space-y-1.5 max-h-48 overflow-y-auto">
           {activity.length === 0 ? (
-            <p className="text-xs text-muted-foreground text-center py-4">
+            <p className="text-[10px] text-[#3b5f76] text-center py-4">
               No agent activity yet
             </p>
           ) : (
@@ -227,24 +232,24 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
             }) => (
               <div 
                 key={item.id}
-                className="flex items-start gap-2 p-2 rounded bg-secondary/30 text-xs"
+                className="flex items-start gap-2 p-2 rounded-lg bg-white border-2 border-black text-xs shadow-[inset_0_0_0_2px_#6fa6c3]"
               >
-                <div className="text-accent mt-0.5">
+                <div className="text-[#ffcc00] mt-0.5">
                   {getAgentIcon(item.agent_id)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-foreground truncate">
+                    <span className="font-mono font-bold text-[#0b2a3a] truncate">
                       {item.agent_id}
                     </span>
-                    <Badge variant="outline" className="text-xs px-1">
+                    <HabboPill variant="info" className="text-[8px] px-1 py-0">
                       {item.action_type}
-                    </Badge>
+                    </HabboPill>
                   </div>
-                  <p className="text-muted-foreground truncate mt-0.5">
+                  <p className="text-[#3b5f76] truncate mt-0.5 text-[10px]">
                     {item.description}
                   </p>
-                  <span className="text-muted-foreground/70 font-mono">
+                  <span className="text-[#6fa6c3] font-mono text-[9px]">
                     {new Date(item.created_at).toLocaleTimeString()}
                   </span>
                 </div>
@@ -252,17 +257,18 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
             ))
           )}
         </div>
-      </Card>
+      </HabboCard>
 
-      <Card className="p-4 bg-card/50 border-border">
-        <div className="flex items-center gap-2 mb-4">
-          <FileText className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold tracking-tight">DOCUMENTS</h3>
+      {/* Documents Card */}
+      <HabboCard className="p-3">
+        <div className="flex items-center gap-2 mb-3">
+          <FileText className="w-4 h-4 text-[#ffcc00]" />
+          <h3 className="font-bold text-[12px] text-[#0b2a3a]">DOCUMENTS</h3>
         </div>
         
-        <div className="space-y-2 max-h-48 overflow-y-auto">
+        <div className="space-y-1.5 max-h-36 overflow-y-auto">
           {documents.length === 0 ? (
-            <p className="text-xs text-muted-foreground text-center py-4">
+            <p className="text-[10px] text-[#3b5f76] text-center py-4">
               No documents uploaded yet
             </p>
           ) : (
@@ -274,39 +280,40 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
             }) => (
               <div 
                 key={doc.id}
-                className="flex items-center justify-between p-2 rounded bg-secondary/30 text-xs"
+                className="flex items-center justify-between p-2 rounded-lg bg-white border-2 border-black text-xs shadow-[inset_0_0_0_2px_#6fa6c3]"
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  {doc.status === "analyzed" && <CheckCircle2 className="w-3.5 h-3.5 text-primary flex-shrink-0" />}
-                  {doc.status === "processed" && <Clock className="w-3.5 h-3.5 text-chart-4 flex-shrink-0" />}
-                  {doc.status === "pending" && <Loader2 className="w-3.5 h-3.5 text-muted-foreground animate-spin flex-shrink-0" />}
-                  <span className="font-mono truncate">{doc.filename}</span>
+                  {doc.status === "analyzed" && <CheckCircle2 className="w-3.5 h-3.5 text-[#22c55e] flex-shrink-0" />}
+                  {doc.status === "processed" && <Clock className="w-3.5 h-3.5 text-[#f59e0b] flex-shrink-0" />}
+                  {doc.status === "pending" && <Loader2 className="w-3.5 h-3.5 text-[#6fa6c3] animate-spin flex-shrink-0" />}
+                  <span className="font-mono truncate text-[#0b2a3a]">{doc.filename}</span>
                 </div>
-                <Badge 
-                  variant="outline" 
-                  className={`text-xs ml-2 flex-shrink-0 ${
-                    doc.status === "analyzed" ? "text-primary border-primary/30" :
-                    doc.status === "processed" ? "text-chart-4 border-chart-4/30" :
-                    "text-muted-foreground"
-                  }`}
+                <HabboPill 
+                  variant={
+                    doc.status === "analyzed" ? "success" :
+                    doc.status === "processed" ? "warning" :
+                    "info"
+                  }
+                  className="text-[8px] ml-2 flex-shrink-0"
                 >
                   {doc.status}
-                </Badge>
+                </HabboPill>
               </div>
             ))
           )}
         </div>
-      </Card>
+      </HabboCard>
 
-      <Card className="p-4 bg-card/50 border-border">
-        <div className="flex items-center gap-2 mb-4">
-          <Hash className="w-5 h-5 text-primary" />
-          <h3 className="font-semibold tracking-tight">TRACKED ENTITIES</h3>
+      {/* Tracked Entities Card */}
+      <HabboCard className="p-3">
+        <div className="flex items-center gap-2 mb-3">
+          <Hash className="w-4 h-4 text-[#ffcc00]" />
+          <h3 className="font-bold text-[12px] text-[#0b2a3a]">TRACKED ENTITIES</h3>
         </div>
         
-        <div className="space-y-2 max-h-48 overflow-y-auto">
+        <div className="space-y-1.5 max-h-36 overflow-y-auto">
           {entities.length === 0 ? (
-            <p className="text-xs text-muted-foreground text-center py-4">
+            <p className="text-[10px] text-[#3b5f76] text-center py-4">
               No entities extracted yet
             </p>
           ) : (
@@ -318,21 +325,21 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
             }) => (
               <div 
                 key={entity.id}
-                className="flex items-center justify-between p-2 rounded bg-secondary/30 text-xs"
+                className="flex items-center justify-between p-2 rounded-lg bg-white border-2 border-black text-xs shadow-[inset_0_0_0_2px_#6fa6c3]"
               >
                 <div className="flex items-center gap-2 min-w-0">
-                  <Badge 
-                    variant="outline" 
-                    className={`text-xs px-1.5 ${
-                      entity.entity_type === "person" ? "text-chart-4 border-chart-4/30" :
-                      entity.entity_type === "organization" ? "text-accent-foreground border-accent/30" :
-                      entity.entity_type === "location" ? "text-chart-2 border-chart-2/30" :
-                      "text-muted-foreground"
-                    }`}
+                  <HabboPill 
+                    variant={
+                      entity.entity_type === "person" ? "warning" :
+                      entity.entity_type === "organization" ? "info" :
+                      entity.entity_type === "location" ? "success" :
+                      "info"
+                    }
+                    className="text-[8px] px-1.5"
                   >
                     {entity.entity_type.slice(0, 3).toUpperCase()}
-                  </Badge>
-                  <span className={`font-mono truncate ${entity.is_redacted ? "text-destructive" : ""}`}>
+                  </HabboPill>
+                  <span className={`font-mono truncate ${entity.is_redacted ? "text-[#dc2626] font-bold" : "text-[#0b2a3a]"}`}>
                     {entity.name}
                   </span>
                 </div>
@@ -340,7 +347,7 @@ export function AgentPanel({ investigationId }: AgentPanelProps) {
             ))
           )}
         </div>
-      </Card>
+      </HabboCard>
     </div>
   )
 }
