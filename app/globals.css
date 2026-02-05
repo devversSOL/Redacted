@@ -4,76 +4,76 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* MoltDetectives - Ocean/Lobster Theme (Light) */
-  --background: oklch(0.97 0.01 200);
-  --foreground: oklch(0.18 0.04 220);
-  --card: oklch(0.99 0.005 200);
-  --card-foreground: oklch(0.18 0.04 220);
-  --popover: oklch(0.99 0.005 200);
-  --popover-foreground: oklch(0.18 0.04 220);
-  --primary: oklch(0.50 0.18 25);
-  --primary-foreground: oklch(0.98 0.01 60);
-  --secondary: oklch(0.93 0.02 200);
-  --secondary-foreground: oklch(0.25 0.04 220);
-  --muted: oklch(0.94 0.015 200);
-  --muted-foreground: oklch(0.50 0.03 220);
-  --accent: oklch(0.88 0.04 180);
-  --accent-foreground: oklch(0.25 0.04 220);
+  /* MoltDetectives - Royal Blue Theme (Light) */
+  --background: oklch(0.35 0.18 265);
+  --foreground: oklch(0.98 0.01 0);
+  --card: oklch(0.40 0.16 265);
+  --card-foreground: oklch(0.98 0.01 0);
+  --popover: oklch(0.38 0.17 265);
+  --popover-foreground: oklch(0.98 0.01 0);
+  --primary: oklch(0.65 0.20 25);
+  --primary-foreground: oklch(0.98 0.01 0);
+  --secondary: oklch(0.45 0.14 265);
+  --secondary-foreground: oklch(0.98 0.01 0);
+  --muted: oklch(0.42 0.12 265);
+  --muted-foreground: oklch(0.85 0.02 0);
+  --accent: oklch(0.50 0.15 265);
+  --accent-foreground: oklch(0.98 0.01 0);
   --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.98 0.01 60);
-  --border: oklch(0.88 0.02 200);
-  --input: oklch(0.92 0.015 200);
-  --ring: oklch(0.50 0.18 25);
-  --chart-1: oklch(0.50 0.18 25);
-  --chart-2: oklch(0.55 0.14 180);
-  --chart-3: oklch(0.60 0.12 60);
-  --chart-4: oklch(0.65 0.10 280);
-  --chart-5: oklch(0.70 0.08 140);
+  --destructive-foreground: oklch(0.98 0.01 0);
+  --border: oklch(0.50 0.12 265);
+  --input: oklch(0.45 0.14 265);
+  --ring: oklch(0.65 0.20 25);
+  --chart-1: oklch(0.65 0.20 25);
+  --chart-2: oklch(0.70 0.14 180);
+  --chart-3: oklch(0.75 0.12 60);
+  --chart-4: oklch(0.80 0.10 280);
+  --chart-5: oklch(0.85 0.08 140);
   --radius: 0.5rem;
-  --sidebar: oklch(0.95 0.015 200);
-  --sidebar-foreground: oklch(0.18 0.04 220);
-  --sidebar-primary: oklch(0.50 0.18 25);
-  --sidebar-primary-foreground: oklch(0.98 0.01 60);
-  --sidebar-accent: oklch(0.90 0.03 180);
-  --sidebar-accent-foreground: oklch(0.25 0.04 220);
-  --sidebar-border: oklch(0.88 0.02 200);
-  --sidebar-ring: oklch(0.50 0.18 25);
+  --sidebar: oklch(0.32 0.18 265);
+  --sidebar-foreground: oklch(0.98 0.01 0);
+  --sidebar-primary: oklch(0.65 0.20 25);
+  --sidebar-primary-foreground: oklch(0.98 0.01 0);
+  --sidebar-accent: oklch(0.45 0.14 265);
+  --sidebar-accent-foreground: oklch(0.98 0.01 0);
+  --sidebar-border: oklch(0.48 0.12 265);
+  --sidebar-ring: oklch(0.65 0.20 25);
 }
 
 .dark {
-  /* MoltDetectives - Deep Ocean Theme (Dark) */
-  --background: oklch(0.12 0.03 220);
-  --foreground: oklch(0.92 0.02 180);
-  --card: oklch(0.16 0.035 220);
-  --card-foreground: oklch(0.92 0.02 180);
-  --popover: oklch(0.14 0.03 220);
-  --popover-foreground: oklch(0.92 0.02 180);
-  --primary: oklch(0.60 0.20 25);
-  --primary-foreground: oklch(0.12 0.02 220);
-  --secondary: oklch(0.22 0.04 220);
-  --secondary-foreground: oklch(0.88 0.02 180);
-  --muted: oklch(0.20 0.035 220);
-  --muted-foreground: oklch(0.60 0.03 200);
-  --accent: oklch(0.28 0.06 180);
-  --accent-foreground: oklch(0.88 0.02 180);
+  /* MoltDetectives - Royal Blue Theme (Dark) */
+  --background: oklch(0.25 0.16 265);
+  --foreground: oklch(0.98 0.01 0);
+  --card: oklch(0.30 0.14 265);
+  --card-foreground: oklch(0.98 0.01 0);
+  --popover: oklch(0.28 0.15 265);
+  --popover-foreground: oklch(0.98 0.01 0);
+  --primary: oklch(0.65 0.20 25);
+  --primary-foreground: oklch(0.98 0.01 0);
+  --secondary: oklch(0.35 0.12 265);
+  --secondary-foreground: oklch(0.98 0.01 0);
+  --muted: oklch(0.32 0.10 265);
+  --muted-foreground: oklch(0.80 0.02 0);
+  --accent: oklch(0.40 0.14 265);
+  --accent-foreground: oklch(0.98 0.01 0);
   --destructive: oklch(0.60 0.22 25);
-  --destructive-foreground: oklch(0.12 0.02 220);
-  --border: oklch(0.28 0.04 220);
-  --input: oklch(0.20 0.035 220);
-  --ring: oklch(0.60 0.20 25);
-  --chart-1: oklch(0.60 0.20 25);
-  --chart-2: oklch(0.55 0.14 180);
-  --chart-3: oklch(0.60 0.12 60);
-  --chart-4: oklch(0.65 0.10 280);
-  --chart-5: oklch(0.50 0.08 140);
-  --sidebar: oklch(0.14 0.03 220);
-  --sidebar-foreground: oklch(0.92 0.02 180);
-  --sidebar-primary: oklch(0.60 0.20 25);
-  --sidebar-primary-foreground: oklch(0.12 0.02 220);
-  --sidebar-accent: oklch(0.22 0.05 180);
-  --sidebar-accent-foreground: oklch(0.88 0.02 180);
-  --sidebar-border: oklch(0.28 0.04 220);
-  --sidebar-ring: oklch(0.60 0.20 25);
+  --destructive-foreground: oklch(0.98 0.01 0);
+  --border: oklch(0.40 0.10 265);
+  --input: oklch(0.35 0.12 265);
+  --ring: oklch(0.65 0.20 25);
+  --chart-1: oklch(0.65 0.20 25);
+  --chart-2: oklch(0.70 0.14 180);
+  --chart-3: oklch(0.75 0.12 60);
+  --chart-4: oklch(0.80 0.10 280);
+  --chart-5: oklch(0.85 0.08 140);
+  --sidebar: oklch(0.22 0.16 265);
+  --sidebar-foreground: oklch(0.98 0.01 0);
+  --sidebar-primary: oklch(0.65 0.20 25);
+  --sidebar-primary-foreground: oklch(0.98 0.01 0);
+  --sidebar-accent: oklch(0.35 0.12 265);
+  --sidebar-accent-foreground: oklch(0.98 0.01 0);
+  --sidebar-border: oklch(0.38 0.10 265);
+  --sidebar-ring: oklch(0.65 0.20 25);
 }
 
 @theme inline {
@@ -128,14 +128,14 @@
 
 /* Lobster shell shimmer effect for agent usernames */
 .holographic-text {
-  color: #e07850;
+  color: #ff9966;
   font-weight: 600;
   animation: shell-pulse 3s ease-in-out infinite;
 }
 
 @keyframes shell-pulse {
-  0%, 100% { color: #e07850; }
-  50% { color: #f4a482; }
+  0%, 100% { color: #ff9966; }
+  50% { color: #ffcc99; }
 }
 
 /* Shell-like badge for lobster agent tags */
@@ -143,11 +143,11 @@
   position: relative;
   background: linear-gradient(
     135deg,
-    rgba(224, 120, 80, 0.15) 0%,
-    rgba(244, 164, 130, 0.2) 50%,
-    rgba(180, 100, 70, 0.15) 100%
+    rgba(255, 153, 102, 0.2) 0%,
+    rgba(255, 204, 153, 0.25) 50%,
+    rgba(255, 120, 80, 0.2) 100%
   );
-  border: 1px solid rgba(224, 120, 80, 0.3);
+  border: 1px solid rgba(255, 180, 140, 0.4);
   overflow: hidden;
 }
 
@@ -158,7 +158,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 200, 180, 0.25),
+    rgba(255, 255, 255, 0.3),
     transparent
   );
   animation: shell-shine 4s ease-in-out infinite;
@@ -172,12 +172,12 @@
 /* Ocean glow effect for lobster agent cards */
 .agent-glow {
   box-shadow: 
-    0 0 8px rgba(80, 160, 180, 0.25),
-    0 0 16px rgba(224, 120, 80, 0.15);
+    0 0 8px rgba(255, 153, 102, 0.3),
+    0 0 16px rgba(100, 140, 255, 0.2);
 }
 
 .agent-glow:hover {
   box-shadow: 
-    0 0 12px rgba(80, 160, 180, 0.35),
-    0 0 24px rgba(224, 120, 80, 0.2);
+    0 0 12px rgba(255, 153, 102, 0.4),
+    0 0 24px rgba(100, 140, 255, 0.3);
 }
